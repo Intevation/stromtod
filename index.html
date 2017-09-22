@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <title>Karte</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        html,
+        body,
+        #map {
+            height: 90%;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='map'></div>
+    <input type="radio" name="anzahl" id="AnzahlA" checked />
+    <label for="AnzahlA">AnzahlA</label>
+    <input type="radio" name="anzahl" id="AnzahlB" />
+    <label for="AnzahlB">AnzahlB</label>
+    <input type="radio" name="anzahl" id="AnzahlC" />
+    <label for="AnzahlC">AnzahlC</label>
+    <input type="radio" name="anzahl" id="AnzahlABC" />
+    <label for="AnzahlABC">AnzahlABC</label>
+</body>
+
+<script>
+    // Construct a bounding box for this map that the user cannot
+    // move out of
+    var southWest = L.latLng(47.2703, 5.8667);
+    var northEast = L.latLng(55.0585, 15.0419);
+    var maxBounds = L.latLngBounds(southWest, northEast);
+
+    var map = L.map('map', {
+        bounds: maxBounds,
+        maxBounds: maxBounds,
+        minZoom: 6,
+        maxZoom: 18
+    }).setView([51.18, 9.26], 6);
+
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+    }).addTo(map);
+
+    function setAnzahlAColor(d) {
+        return d > 4 ? '#91191e' :
+        d > 3 ? '#ef2e21' :
+        d > 1 ? '#f3b710' :
+        d > 0 ? '#eaee26' :
+        '#FFFFFF';
+    }
+
+    function AnzahlAStyle(feature) {
+        return {
+            fillColor: setAnzahlAColor(feature.properties.Anzahl_A),
+            weight: 1,
+            opacity: 0.7,
+            color: 'white',
+            fillOpacity: 0.7
+        };
+    }
+
+    function setAnzahlBColor(d) {
+        return d > 5 ? '#91191e' :
+        d > 2 ? '#ef2e21' :
+        d > 1 ? '#f3b710' :
+        d > 0 ? '#eaee26' :
+        '#FFFFFF';
+    }
+
+
+    function AnzahlBStyle(feature) {
+        return {
+            fillColor: setAnzahlBColor(feature.properties.Anzahl_B),
+            weight: 1,
+            opacity: 0.7,
+            color: 'white',
+            fillOpacity: 0.7
+        };
+    }
+
+    function setAnzahlCColor(d) {
+        return d > 24 ? '#91191e' :
+        d > 19 ? '#ef2e21' :
+        d > 15 ? '#f3b710' :
+        d > 0 ? '#eaee26' :
+        '#FFFFFF';
+    }
+
+
+    function AnzahlCStyle(feature) {
+        return {
+            fillColor: setAnzahlCColor(feature.properties.Anzahl_C),
+            weight: 1,
+            opacity: 0.7,
+            color: 'white',
+            fillOpacity: 0.7
+        };
+    }
+
+    function setAnzahlABCColor(d) {
+        return d > 31 ? '#91191e' :
+        d > 24 ? '#ef2e21' :
+        d > 17 ? '#f3b710' :
+        d > 0 ? '#eaee26' :
+        '#FFFFFF';
+    }
+
+
+    function AnzahlABCStyle(feature) {
+        return {
+            fillColor: setAnzahlABCColor(feature.properties.Anzahl_ABC),
+            weight: 1,
+            opacity: 0.7,
+            color: 'white',
+            fillOpacity: 0.7
+        };
+    }
+
+    var stylesMapping = {
+        "AnzahlA": AnzahlAStyle,
+        "AnzahlB": AnzahlBStyle,
+        "AnzahlC": AnzahlCStyle,
+        "AnzahlABC": AnzahlABCStyle
+    };
+
+    assignClickListener("AnzahlA", onRadioClick);
+    assignClickListener("AnzahlB", onRadioClick);
+    assignClickListener("AnzahlC", onRadioClick);
+    assignClickListener("AnzahlABC", onRadioClick);
+
+    function assignClickListener(id, listener) {
+        document.getElementById(id).addEventListener("click", listener);
+    }
+
+    var myGeoJSON;
+    // load GeoJSON from an external file
+    $.getJSON("data/Sensitivitaetskarte_wgs84.geojson", function (data) {
+        // Radio buttons to let the user choose the ethny to use for colors.
+        myGeoJSON = L.geoJson(data, {
+            style: AnzahlAStyle
+        }).addTo(map);
+    });
+
+    function onRadioClick(event) {
+        var target = event.currentTarget,
+            selectedAnzahl = target.id;
+
+        console.log(selectedAnzahl);
+        myGeoJSON.setStyle(stylesMapping[selectedAnzahl]);
+    }
+
+</script>
+
+</html>

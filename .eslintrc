@@ -1,0 +1,13 @@
+{
+"env": {
+  "browser": 1
+  },
+  "extends": "standard",
+  "rules": {
+	"no-new": 0,
+        "semi": 0,
+        "no-spaced-func": 1,
+        "space-before-function-paren": ["error", "never"],
+        "new-cap": ["warn", { "properties": true }]
+    }
+}

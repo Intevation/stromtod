@@ -1,0 +1,6 @@
+AddType application/json .json
+
+# Deflate Compression by FileType
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/csv text/javascript application/javascript application/json
+</IfModule>

@@ -127,28 +127,19 @@
                             </div>
                         </li>
                         <li>
-                            <h3 class="uk-accordion-title">Important Bird Areas (IBA)</h3>
+                            <h3 class="uk-accordion-title">Important Bird Areas (IBAs)</h3>
                             <div class="uk-accordion-content">
                                 <div class="layer iba layer-legend">
                                     <div class="title">
-                                        <span>RAMSAR</span>
-                                        <span class="tooltip" title="IBA RAMSAR" uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
+                                        <span>IBAs</span>
+                                        <span class="tooltip" title="Important Bird Areas (IBA) sind Gebiete, die nach globalen Kriterien als wichtig für den Arten- und Biotopschutz speziell für Vögel eingestuft werden." uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
                                     </div>
                                     <div class="switch">
                                         <input type="checkbox" name="iba" id="ramsar" class="ios-toggle" />
                                         <label for="ramsar" class="checkbox-label" data-off="aus" data-on="an"></label>
                                     </div>
                                 </div>
-                                <div class="layer iba layer-legend">
-                                    <div class="title">
-                                        <span>sonstige</span>
-                                        <span class="tooltip" title="sonstige" uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
-                                    </div>
-                                    <div class="switch">
-                                        <input type="checkbox" name="iba" id="sonstige" class="ios-toggle" />
-                                        <label for="sonstige" class="checkbox-label" data-off="aus" data-on="an"></label>
-                                    </div>
-                                </div>
+                                <div class="legend"></div>
                             </div>
                         </li>
                         <li>
@@ -157,14 +148,14 @@
                                 <div class="layer osm">
                                     <div class="title">OpenStreetMap</div>
                                     <div class="switch">
-                                        <input type="checkbox" name="osm" id="osm" class="ios-toggle" />
+                                        <input type="checkbox" name="baselayer" id="osm" class="ios-toggle" checked/>
                                         <label for="osm" class="checkbox-label" data-off="aus" data-on="an"></label>
                                     </div>
                                 </div>
                                 <div class="layer satellite">
                                     <div class="title">Satellit</div>
                                     <div class="switch">
-                                        <input type="checkbox" name="satellite" id="satellite" class="ios-toggle" />
+                                        <input type="checkbox" name="baselayer" id="satellite" class="ios-toggle" />
                                         <label for="satellite" class="checkbox-label" data-off="aus" data-on="an"></label>
                                     </div>
                                 </div>
@@ -180,8 +171,11 @@
     </div>
 </body>
 
+<!--  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY" async defer></script> -->
+<script src="https://maps.googleapis.com/maps/api/js" async defer></script>
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+<script src='js/Leaflet.GoogleMutant.js'></script>
 <script src="js/uikit.js"></script>
 <script src="js/uikit-icons.js"></script>
 <script src="js/index.js"></script>

@@ -1,5 +1,5 @@
 
-599 > $(window).width() ? $(".intro-sidebar").html("Datensätze anzeigen.") : $(".intro-sidebar").html("Hier können Sie sich verschiedene Datensätze anzeigen lassen, um interaktiv das Ausmaß der Vogelkollisionen zu erkunden.");
+599 > $(window).width() ? $(".intro-sidebar").html("Datensätze anzeigen.") : $(".intro-sidebar").html("Hier können Sie sich verschiedene Datensätze anzeigen lassen, um interaktiv die Daten zu den Vogelkollisionen zu erkunden.");
 
 $("#start-btn").on("click", function () {
     $("#intro").outerHeight(!0);
@@ -21,9 +21,14 @@ var map = L.map('map', {
     maxZoom: 18
 }).setView([51.18, 9.26], 6);
 
-L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
 }).addTo(map);
+
+var satellite = L.gridLayer.googleMutant({
+    type: 'hybrid', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
+    attribution: 'map application by <a href="https://www.nabu.de" target=_blank>NABU</a>'
+});
 
 L.Mask = L.Polygon.extend({
     options: {
@@ -153,11 +158,13 @@ $("input[name=brutvogelarten]").change(function () {
 
     //Uncheck other checkboxes
     $("input[name=brutvogelarten]").not(this).prop('checked', false);
+    //Removed other legends
     $('.brutvogelarten.layer-legend').not(this).removeClass('active');
 
     //Deal with actual checkbox
     var id = $(this).attr("id");
     if ($(this).is(":checked")) {
+        sensitivitaetskarte.removeFrom(map);
         sensitivitaetskarte.setStyle(stylesBrutvogelarten[id]);
         sensitivitaetskarte.addTo(map);
     } else {
@@ -170,13 +177,14 @@ var iba;
 $.getJSON("data/iba.geojson", function (data) {
     // Radio buttons to let the user choose the ethny to use for colors.
     iba = L.geoJson(data, {
-        style: {"color": "#15534C",
-    "weight": "1.5"} 
+        style: {
+            "color": "#15534C",
+            "weight": "1.5"
+        }
     })
 });
 
 $("input[name=iba]").change(function () {
-    console.log("test");
     //Deal with actual checkbox
     //var id = $(this).attr("id");
     if ($(this).is(":checked")) {
@@ -186,9 +194,39 @@ $("input[name=iba]").change(function () {
     }
 });
 
+$("input[name=baselayer]").change(function () {
+    //Uncheck other checkboxes
+    $("input[name=baselayer]").not(this).prop('checked', false);
+    //Deal with actual checkbox
+    var id = $(this).attr("id");
+    console.log(id);
+    if (id == "osm"){ 
+        if ($(this).is(":checked")) {
+        satellite.removeFrom(map);    
+        osm.addTo(map);
+    } else {
+        osm.removeFrom(map);
+    } 
+}
+    else if ( id == "satellite"){
+        if ($(this).is(":checked")) {
+        osm.removeFrom(map);    
+        satellite.addTo(map);
+    } else {
+        satellite.removeFrom(map);
+    } 
+
+    }
+});
+
+$(".iba.layer-legend").change(function () {
+    $(this).next().toggleClass("active");
+    $(this).next().slideToggle("slow")
+});
+
 $(".brutvogelarten.layer-legend").change(function () {
-   $(".brutvogelarten.layer-legend").not(this).next(".active").slideToggle("slow");
-   $(".brutvogelarten.layer-legend").not(this).next().removeClass("active");
+    $(".brutvogelarten.layer-legend").not(this).next(".active").slideToggle("slow");
+    $(".brutvogelarten.layer-legend").not(this).next().removeClass("active");
 
     $(this).next().toggleClass("active");
     $(this).next().slideToggle("slow")

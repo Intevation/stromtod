@@ -3,6 +3,8 @@ syntax: glob
 
 dist/**
 node_modules/**
+tiles/**
+data_orig/**
 
 ## switch to regexp syntax.
 #syntax: regexp

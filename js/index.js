@@ -186,12 +186,40 @@ $('input[name=iba]').change(function() {
   }
 });
 
+var vectorTileOptions = {
+  vectorTileLayerStyles: {
+    powerlines_380000geojson: {
+      weight: 2,
+      color: '#4b86b7'
+    },
+    powerlines_220000geojson: {
+      weight: 1,
+      color: '#5aae58'
+    },
+    powerlines_110000geojson: {
+      weight: 0.75,
+      color: '#dac1dd'
+    }
+  }
+};
+var powerlines_380000geojson = L.vectorGrid.protobuf('tiles/powerlines_380000/{z}/{x}/{y}.pbf', vectorTileOptions);
+var powerlines_220000geojson = L.vectorGrid.protobuf('tiles/powerlines_220000/{z}/{x}/{y}.pbf', vectorTileOptions);
+var powerlines_110000geojson = L.vectorGrid.protobuf('tiles/powerlines_110000/{z}/{x}/{y}.pbf', vectorTileOptions);
+
 $('input[name=powerlines]').change(function() {
   // Deal with actual checkbox
   // var id = $(this).attr("id");
   if ($(this).is(':checked')) {
+    powerlines_380000geojson.addTo(map);
+    powerlines_380000geojson.bringToFront();
+    powerlines_220000geojson.addTo(map);
+    powerlines_220000geojson.bringToFront();
+    powerlines_110000geojson.addTo(map);
+    powerlines_110000geojson.bringToFront();
   } else {
-
+    powerlines_380000geojson.removeFrom(map);
+    powerlines_220000geojson.removeFrom(map);
+    powerlines_110000geojson.removeFrom(map);
   }
 });
 

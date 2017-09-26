@@ -16,7 +16,7 @@ var maxBounds = L.latLngBounds(southWest, northEast);
 
 var map = L.map('map', {
   bounds: maxBounds,
-  maxBounds: maxBounds,
+  // maxBounds: maxBounds,
   minZoom: 6,
   maxZoom: 18
 }).setView([51.18, 9.26], 6);

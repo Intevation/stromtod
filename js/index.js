@@ -10,13 +10,13 @@ $('#start-btn').on('click', function() {
 
 // Construct a bounding box for this map that the user cannot
 // move out of
-var southWest = L.latLng(47.2703, 5.8667);
-var northEast = L.latLng(55.0585, 15.0419);
+var southWest = L.latLng(41.21172151054787, -32.65136718750001);
+var northEast = L.latLng(59.40036514079251, 51.19628906250001);
 var maxBounds = L.latLngBounds(southWest, northEast);
 
 var map = L.map('map', {
   bounds: maxBounds,
-  // maxBounds: maxBounds,
+  maxBounds: maxBounds,
   minZoom: 6,
   maxZoom: 18
 }).setView([51.18, 9.26], 6);

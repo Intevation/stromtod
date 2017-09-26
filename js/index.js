@@ -168,6 +168,7 @@ $('input[name=brutvogelarten]').change(function() {
     sensitivitaetskarte.removeFrom(map);
     sensitivitaetskarte.setStyle(stylesBrutvogelarten[id]);
     sensitivitaetskarte.addTo(map);
+    sensitivitaetskarte.bringToBack();
   } else {
     sensitivitaetskarte.removeFrom(map);
   }
@@ -195,40 +196,56 @@ $('input[name=iba]').change(function() {
   }
 });
 
-var vectorTileOptions = {
-  vectorTileLayerStyles: {
-    powerlines_380000geojson: {
+var powerlines = {
+}
+
+var powerlines_380000;
+// load GeoJSON from an external file
+$.getJSON('data/powerlines_380000.geojson', function(data) {
+  // Radio buttons to let the user choose the ethny to use for colors.
+  powerlines_380000 = L.geoJson(data, {
+    style: {
       weight: 2,
       color: '#4b86b7'
-    },
-    powerlines_220000geojson: {
+    }
+  })
+  powerlines['powerlines_380000'] = powerlines_380000
+});
+var powerlines_220000;
+// load GeoJSON from an external file
+$.getJSON('data/powerlines_220000.geojson', function(data) {
+  // Radio buttons to let the user choose the ethny to use for colors.
+  powerlines_220000 = L.geoJson(data, {
+    style: {
+      weight: 1.5,
+      color: '#dd1e1c'
+    }
+  })
+  powerlines['powerlines_220000'] = powerlines_220000
+});
+var powerlines_110000;
+// load GeoJSON from an external file
+$.getJSON('data/powerlines_110000.geojson', function(data) {
+  // Radio buttons to let the user choose the ethny to use for colors.
+  powerlines_110000 = L.geoJson(data, {
+    style: {
       weight: 1,
       color: '#5aae58'
-    },
-    powerlines_110000geojson: {
-      weight: 0.75,
-      color: '#dac1dd'
     }
-  }
-};
-var powerlines_380000geojson = L.vectorGrid.protobuf('tiles/powerlines_380000/{z}/{x}/{y}.pbf', vectorTileOptions);
-var powerlines_220000geojson = L.vectorGrid.protobuf('tiles/powerlines_220000/{z}/{x}/{y}.pbf', vectorTileOptions);
-var powerlines_110000geojson = L.vectorGrid.protobuf('tiles/powerlines_110000/{z}/{x}/{y}.pbf', vectorTileOptions);
+  });
+  powerlines['powerlines_110000'] = powerlines_110000
+});
 
 $('input[name=powerlines]').change(function() {
   // Deal with actual checkbox
-  // var id = $(this).attr("id");
+  var id = $(this).attr('id');
+  console.log(id);
   if ($(this).is(':checked')) {
-    powerlines_380000geojson.addTo(map);
-    powerlines_380000geojson.bringToFront();
-    powerlines_220000geojson.addTo(map);
-    powerlines_220000geojson.bringToFront();
-    powerlines_110000geojson.addTo(map);
-    powerlines_110000geojson.bringToFront();
+    powerlines[id].removeFrom(map);
+    powerlines[id].addTo(map);
+    powerlines[id].bringToFront();
   } else {
-    powerlines_380000geojson.removeFrom(map);
-    powerlines_220000geojson.removeFrom(map);
-    powerlines_110000geojson.removeFrom(map);
+    powerlines[id].removeFrom(map);
   }
 });
 

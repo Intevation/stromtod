@@ -4,6 +4,22 @@ import 'leaflet.gridlayer.googlemutant';
 import 'leaflet.vectorgrid';
 import 'uikit'
 
+// https://css-tricks.com/css-modules-part-2-getting-started/
+// https://medium.com/@rajaraodv/webpack-the-confusing-parts-58712f8fcad9#.txbwrns34
+import '../node_modules/leaflet/dist/leaflet.css';
+import '../node_modules/uikit/dist/css/uikit.css';
+import '../css/index.css';
+
+// Issues importing leaflet.css when using webpack
+// https://github.com/PaulLeCam/react-leaflet/issues/255
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+});
 $(window).width() < 599 ? $('.intro-sidebar').html('Datensätze anzeigen.') : $('.intro-sidebar').html('Hier können Sie sich verschiedene Datensätze anzeigen lassen, um interaktiv die Daten zu den Vogelkollisionen zu erkunden.');
 
 $('#start-btn').on('click', function() {
@@ -204,42 +220,42 @@ $('input[name=iba]').change(function() {
 var powerlines = {
 }
 
-var powerlines_380000;
+var powerlines380000;
 // load GeoJSON from an external file
 $.getJSON('data/powerlines_380000.geojson', function(data) {
   // Radio buttons to let the user choose the ethny to use for colors.
-  powerlines_380000 = L.geoJson(data, {
+  powerlines380000 = L.geoJson(data, {
     style: {
       weight: 2,
       color: '#4b86b7'
     }
   })
-  powerlines['powerlines_380000'] = powerlines_380000
+  powerlines['powerlines_380000'] = powerlines380000
 });
-var powerlines_220000;
+var powerlines220000;
 // load GeoJSON from an external file
 $.getJSON('data/powerlines_220000.geojson', function(data) {
   // Radio buttons to let the user choose the ethny to use for colors.
-  powerlines_220000 = L.geoJson(data, {
+  powerlines220000 = L.geoJson(data, {
     style: {
       weight: 1.5,
       color: '#dd1e1c'
     }
   })
-  powerlines['powerlines_220000'] = powerlines_220000
+  powerlines['powerlines_220000'] = powerlines220000
 });
-var powerlines_110000;
-// load GeoJSON from an external file
-$.getJSON('data/powerlines_110000.geojson', function(data) {
-  // Radio buttons to let the user choose the ethny to use for colors.
-  powerlines_110000 = L.geoJson(data, {
-    style: {
-      weight: 1,
-      color: '#5aae58'
-    }
-  });
-  powerlines['powerlines_110000'] = powerlines_110000
-});
+// var powerlines110000;
+/// / load GeoJSON from an external file
+// $.getJSON('data/powerlines_110000.geojson', function(data) {
+//  // Radio buttons to let the user choose the ethny to use for colors.
+//  powerlines110000 = L.geoJson(data, {
+//    style: {
+//      weight: 1,
+//      color: '#5aae58'
+//    }
+//  });
+//  powerlines['powerlines_110000'] = powerlines110000
+// });
 
 $('input[name=powerlines]').change(function() {
   // Deal with actual checkbox

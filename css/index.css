@@ -181,7 +181,6 @@ em {
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: antialiased;
-    font-smoothing: antialiased;
     width: 100%;
     height: 100%;
     min-height: 100%;
@@ -401,13 +400,13 @@ a:hover {
     width: 1.4em;
     height: 1.4em;
     float: right;
-    background-image: url(../assets/img/plus.svg);
+    background-image: url(images/plus.svg);
     background-repeat: no-repeat;
     background-position: 50% 50%;
 }
 
 #app-container #sidebar div.sidebar-body .uk-open>.uk-accordion-title::after {
-    background-image: url(../assets/img/minus.svg);
+    background-image: url(images/minus.svg);
 }
 
 #app-container #sidebar div.sidebar-body div.layer {
@@ -447,159 +446,6 @@ a:hover {
     padding: 0;
 }
 
-#app-container #sidebar div.sidebar-body div #reveal-villages,
-#app-container #sidebar div.sidebar-body div #reveal-clusters {
-    display: none;
-    background-color: #BCBCBC;
-    color: #fff;
-    padding: 4% 4% 4% 0;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .heading,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .heading {
-    padding: 2% 0 1% 10%;
-    font-weight: 700;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .legend-colors,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .legend-colors {
-    font-weight: 700;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    padding: 2% 4% 2% 30px;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.settings,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.settings {
-    flex: 0.5;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component .label,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component .label {
-    flex: 1;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component .legend-data-villages,
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component .legend-noData-villages,
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component .legend-data-clusters,
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component .legend-noData-clusters,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component .legend-data-villages,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component .legend-noData-villages,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component .legend-data-clusters,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component .legend-noData-clusters {
-    flex: 0.5;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component .legend-data-villages::after,
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component .legend-noData-villages::after,
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component .legend-data-clusters::after,
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component .legend-noData-clusters::after,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component .legend-data-villages::after,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component .legend-noData-villages::after,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component .legend-data-clusters::after,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component .legend-noData-clusters::after {
-    content: "";
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 20px;
-    margin-left: 7px;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component .legend-data-villages::after,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component .legend-data-villages::after {
-    background-color: #037AFF;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component .legend-noData-villages::after,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component .legend-noData-villages::after {
-    background-color: #9012FE;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component .legend-data-clusters::after,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component .legend-data-clusters::after {
-    background-color: #EBA732;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component .legend-noData-clusters::after,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component .legend-noData-clusters::after {
-    background-color: #FF5E00;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs {
-    flex: 1.5;
-    background: none;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs .irs-line,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs .irs-line {
-    height: 3px;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs .irs-bar,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs .irs-bar {
-    height: 3px;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs .irs-bar-edge,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs .irs-bar-edge {
-    height: 3px;
-    left: 6px;
-    width: 6px;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs .irs-min,
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs .irs-max,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs .irs-min,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs .irs-max {
-    color: #fff;
-    font-size: 12px;
-    top: -2px;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs .irs-single,
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs .irs-to,
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs .irs-from,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs .irs-single,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs .irs-to,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs .irs-from {
-    background: rgba(0, 0, 0, 0.7);
-    font-size: 12px;
-    top: -2px;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs .irs-line-left,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs .irs-line-left {
-    left: initial;
-    right: 140px;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs .irs-line-right,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs .irs-line-right {
-    display: none;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs .irs-slider,
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs .to,
-#app-container #sidebar div.sidebar-body div #reveal-villages .slider-component span.irs .from,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs .irs-slider,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs .to,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .slider-component span.irs .from {
-    cursor: pointer;
-    top: 17px;
-    background-position: 1px -117px;
-}
-
-#app-container #sidebar div.sidebar-body div #reveal-villages .exclude,
-#app-container #sidebar div.sidebar-body div #reveal-clusters .exclude {
-    padding: 7% 4% 2% 30px;
-}
 
 #app-container #sidebar .legend .legend-colors {
     width: 100%;
@@ -627,24 +473,6 @@ a:hover {
     width: 40% !important;
 }
 
-#app-container #sidebar .legend-colors.adb-projects {
-    padding: 0 60px;
-    display: flex;
-    align-items: center;
-}
-
-#app-container #sidebar .legend-colors.adb-projects span {
-    margin: 0px 5px 5px 5px;
-    flex: 1;
-    border-radius: 100px;
-    margin: 15px 5px 15px 5px;
-}
-
-#app-container #sidebar .legend-colors.adb-projects .legend-circles {
-    flex: 0.13 !important;
-    width: 10px;
-    height: 10px;
-}
 
 #app-container #sidebar footer {
     width: 100%;
@@ -730,11 +558,6 @@ a:hover {
 #app-container aside#details table tr.detail-hydro td:nth-child(odd) {
     padding-right: 30px;
     width: auto;
-}
-
-#app-container aside#details #detail-adb-img {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
 }
 
 div#modal-full h1,

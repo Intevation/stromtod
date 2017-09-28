@@ -1,8 +1,6 @@
 import $ from 'jquery';
-import L from 'leaflet';
-import 'leaflet.gridlayer.googlemutant';
-import 'leaflet.vectorgrid';
 import 'uikit'
+import mapboxgl from 'mapbox-gl'
 
 // https://css-tricks.com/css-modules-part-2-getting-started/
 // https://medium.com/@rajaraodv/webpack-the-confusing-parts-58712f8fcad9#.txbwrns34
@@ -10,16 +8,49 @@ import '../node_modules/leaflet/dist/leaflet.css';
 import '../node_modules/uikit/dist/css/uikit.css';
 import '../css/index.css';
 
-// Issues importing leaflet.css when using webpack
-// https://github.com/PaulLeCam/react-leaflet/issues/255
-
-delete L.Icon.Default.prototype._getIconUrl;
-
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+var map = new mapboxgl.Map({
+  container: 'map', // container id
+  style: {
+    'version': 8,
+    'sources': {
+      'osm': {
+        'type': 'raster',
+        // point to our third-party tiles. Note that some examples
+        // show a "url" property. This only applies to tilesets with
+        // corresponding TileJSON (such as mapbox tiles).
+        'tiles': [
+          'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          'http://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        ],
+        'tileSize': 256
+      }
+    },
+    'layers': [{
+      'id': 'osm',
+      'type': 'raster',
+      'source': 'osm',
+      'minzoom': 0,
+      'maxzoom': 22
+    }]
+  },
+  center: [9, 52.77],
+  zoom: 7
 });
+
+// disable map rotation using right click + drag
+map.dragRotate.disable();
+
+// disable map rotation using touch rotation gesture
+map.touchZoomRotate.disableRotation();
+
+map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+// disable map rotation using right click + drag
+map.dragRotate.disable();
+
+// // disable map rotation using touch rotation gesture
+map.touchZoomRotate.disableRotation();
+
 $(window).width() < 599 ? $('.intro-sidebar').html('Datensätze anzeigen.') : $('.intro-sidebar').html('Hier können Sie sich verschiedene Datensätze anzeigen lassen, um interaktiv die Daten zu den Vogelkollisionen zu erkunden.');
 
 $('#start-btn').on('click', function() {
@@ -29,334 +60,267 @@ $('#start-btn').on('click', function() {
   $('#overlay').fadeOut(1E3);
 });
 
-// Construct a bounding box for this map that the user cannot
-// move out of
-var southWest = L.latLng(41.21172151054787, -32.65136718750001);
-var northEast = L.latLng(59.40036514079251, 51.19628906250001);
-var maxBounds = L.latLngBounds(southWest, northEast);
-
-var map = L.map('map', {
-  bounds: maxBounds,
-  maxBounds: maxBounds,
-  minZoom: 6,
-  maxZoom: 18
-}).setView([51.18, 9.26], 6);
-
-// var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-// }).addTo(map);
-//
-
-var osm = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.{ext}', {
-  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  subdomains: 'abcd',
-  minZoom: 0,
-  maxZoom: 20,
-  ext: 'png'
-}).addTo(map);
-
-var satellite = L.gridLayer.googleMutant({
-  type: 'hybrid', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-  attribution: 'map application by <a href="https://www.nabu.de" target=_blank>NABU</a>'
-});
-
-L.Mask = L.Polygon.extend({
-  options: {
-    stroke: false,
-    color: '#333',
-    fillOpacity: 0.5,
-    clickable: true,
-
-    outerBounds: new L.LatLngBounds([-90, -360], [90, 360])
-  },
-
-  initialize: function(latLngs, options) {
-    var outerBoundsLatLngs = [
-      this.options.outerBounds.getSouthWest(),
-      this.options.outerBounds.getNorthWest(),
-      this.options.outerBounds.getNorthEast(),
-      this.options.outerBounds.getSouthEast()
-    ];
-    L.Polygon.prototype.initialize.call(this, [outerBoundsLatLngs, latLngs], options);
-  }
-});
-
-L.mask = function(latLngs, options) {
-  return new L.Mask(latLngs, options);
-};
-
-var tk25 = [{ 'lat': 47.3992, 'lng': 12.8318 }, { 'lat': 47.4991, 'lng': 12.8318 }, { 'lat': 47.4991, 'lng': 12.6651 }, { 'lat': 47.5991, 'lng': 12.6651 }, { 'lat': 47.5991, 'lng': 12.4985 }, { 'lat': 47.5991, 'lng': 12.3319 }, { 'lat': 47.5991, 'lng': 12.1652 }, { 'lat': 47.5991, 'lng': 11.9986 }, { 'lat': 47.5991, 'lng': 11.8319 }, { 'lat': 47.5991, 'lng': 11.6653 }, { 'lat': 47.4991, 'lng': 11.6653 }, { 'lat': 47.4991, 'lng': 11.4986 }, { 'lat': 47.3992, 'lng': 11.4986 }, { 'lat': 47.3991, 'lng': 11.332 }, { 'lat': 47.3991, 'lng': 11.1653 }, { 'lat': 47.3991, 'lng': 10.9987 }, { 'lat': 47.3991, 'lng': 10.8321 }, { 'lat': 47.4991, 'lng': 10.8321 }, { 'lat': 47.4991, 'lng': 10.6654 }, { 'lat': 47.4991, 'lng': 10.4988 }, { 'lat': 47.3991, 'lng': 10.4988 }, { 'lat': 47.2992, 'lng': 10.4988 }, { 'lat': 47.2992, 'lng': 10.3321 }, { 'lat': 47.1992, 'lng': 10.3321 }, { 'lat': 47.1992, 'lng': 10.1655 }, { 'lat': 47.2992, 'lng': 10.1655 }, { 'lat': 47.2992, 'lng': 9.9988 }, { 'lat': 47.3991, 'lng': 9.9988 }, { 'lat': 47.4991, 'lng': 9.9988 }, { 'lat': 47.4991, 'lng': 9.8322 }, { 'lat': 47.4991, 'lng': 9.6655 }, { 'lat': 47.4991, 'lng': 9.4989 }, { 'lat': 47.5991, 'lng': 9.4989 }, { 'lat': 47.5991, 'lng': 9.3323 }, { 'lat': 47.5991, 'lng': 9.1656 }, { 'lat': 47.5991, 'lng': 8.999 }, { 'lat': 47.5991, 'lng': 8.8323 }, { 'lat': 47.5991, 'lng': 8.6657 }, { 'lat': 47.4991, 'lng': 8.6657 }, { 'lat': 47.4991, 'lng': 8.499 }, { 'lat': 47.4991, 'lng': 8.3324 }, { 'lat': 47.4991, 'lng': 8.1658 }, { 'lat': 47.4991, 'lng': 7.9991 }, { 'lat': 47.4991, 'lng': 7.8325 }, { 'lat': 47.4991, 'lng': 7.6658 }, { 'lat': 47.4991, 'lng': 7.4992 }, { 'lat': 47.5991, 'lng': 7.4992 }, { 'lat': 47.6991, 'lng': 7.4992 }, { 'lat': 47.7991, 'lng': 7.4992 }, { 'lat': 47.8991, 'lng': 7.4992 }, { 'lat': 47.9991, 'lng': 7.4992 }, { 'lat': 48.0991, 'lng': 7.4992 }, { 'lat': 48.199, 'lng': 7.4992 }, { 'lat': 48.299, 'lng': 7.4992 }, { 'lat': 48.299, 'lng': 7.6658 }, { 'lat': 48.399, 'lng': 7.6658 }, { 'lat': 48.499, 'lng': 7.6658 }, { 'lat': 48.599, 'lng': 7.6658 }, { 'lat': 48.699, 'lng': 7.6658 }, { 'lat': 48.699, 'lng': 7.8325 }, { 'lat': 48.799, 'lng': 7.8325 }, { 'lat': 48.799, 'lng': 7.9991 }, { 'lat': 48.899, 'lng': 7.9991 }, { 'lat': 48.999, 'lng': 7.9991 }, { 'lat': 48.999, 'lng': 7.8325 }, { 'lat': 48.999, 'lng': 7.6658 }, { 'lat': 48.999, 'lng': 7.4992 }, { 'lat': 49.0989, 'lng': 7.4992 }, { 'lat': 49.0989, 'lng': 7.3325 }, { 'lat': 49.0989, 'lng': 7.1659 }, { 'lat': 49.0989, 'lng': 6.9992 }, { 'lat': 49.0989, 'lng': 6.8326 }, { 'lat': 49.0989, 'lng': 6.666 }, { 'lat': 49.1989, 'lng': 6.666 }, { 'lat': 49.1989, 'lng': 6.4993 }, { 'lat': 49.2989, 'lng': 6.4993 }, { 'lat': 49.3989, 'lng': 6.4993 }, { 'lat': 49.3989, 'lng': 6.3327 }, { 'lat': 49.4989, 'lng': 6.3327 }, { 'lat': 49.5989, 'lng': 6.3327 }, { 'lat': 49.6989, 'lng': 6.3327 }, { 'lat': 49.7989, 'lng': 6.3327 }, { 'lat': 49.7989, 'lng': 6.166 }, { 'lat': 49.8989, 'lng': 6.166 }, { 'lat': 49.8989, 'lng': 5.9994 }, { 'lat': 49.9988, 'lng': 5.9994 }, { 'lat': 50.0988, 'lng': 5.9994 }, { 'lat': 50.1988, 'lng': 5.9994 }, { 'lat': 50.1988, 'lng': 6.166 }, { 'lat': 50.2988, 'lng': 6.166 }, { 'lat': 50.3988, 'lng': 6.166 }, { 'lat': 50.3988, 'lng': 6.3327 }, { 'lat': 50.4988, 'lng': 6.3327 }, { 'lat': 50.4988, 'lng': 6.166 }, { 'lat': 50.5988, 'lng': 6.166 }, { 'lat': 50.6988, 'lng': 6.166 }, { 'lat': 50.6988, 'lng': 5.9994 }, { 'lat': 50.7988, 'lng': 5.9994 }, { 'lat': 50.8987, 'lng': 5.9994 }, { 'lat': 50.8987, 'lng': 5.8327 }, { 'lat': 50.9987, 'lng': 5.8327 }, { 'lat': 51.0987, 'lng': 5.8327 }, { 'lat': 51.0987, 'lng': 5.9994 }, { 'lat': 51.1987, 'lng': 5.9994 }, { 'lat': 51.2987, 'lng': 5.9994 }, { 'lat': 51.2987, 'lng': 6.166 }, { 'lat': 51.3987, 'lng': 6.166 }, { 'lat': 51.4987, 'lng': 6.166 }, { 'lat': 51.4987, 'lng': 5.9994 }, { 'lat': 51.5987, 'lng': 5.9994 }, { 'lat': 51.6987, 'lng': 5.9994 }, { 'lat': 51.6987, 'lng': 5.8327 }, { 'lat': 51.7986, 'lng': 5.8327 }, { 'lat': 51.8986, 'lng': 5.8327 }, { 'lat': 51.8986, 'lng': 5.9994 }, { 'lat': 51.8986, 'lng': 6.166 }, { 'lat': 51.8986, 'lng': 6.3327 }, { 'lat': 51.8986, 'lng': 6.4993 }, { 'lat': 51.8986, 'lng': 6.6659 }, { 'lat': 51.9986, 'lng': 6.6659 }, { 'lat': 52.0986, 'lng': 6.6659 }, { 'lat': 52.0986, 'lng': 6.8326 }, { 'lat': 52.1986, 'lng': 6.8326 }, { 'lat': 52.1986, 'lng': 6.9992 }, { 'lat': 52.2986, 'lng': 6.9992 }, { 'lat': 52.3986, 'lng': 6.9992 }, { 'lat': 52.3986, 'lng': 6.8326 }, { 'lat': 52.3986, 'lng': 6.6659 }, { 'lat': 52.4986, 'lng': 6.6659 }, { 'lat': 52.5986, 'lng': 6.6659 }, { 'lat': 52.6985, 'lng': 6.6659 }, { 'lat': 52.6985, 'lng': 6.8326 }, { 'lat': 52.6985, 'lng': 6.9992 }, { 'lat': 52.7985, 'lng': 6.9992 }, { 'lat': 52.8985, 'lng': 6.9992 }, { 'lat': 52.8985, 'lng': 7.1659 }, { 'lat': 52.9985, 'lng': 7.1659 }, { 'lat': 53.0985, 'lng': 7.1659 }, { 'lat': 53.1985, 'lng': 7.1659 }, { 'lat': 53.2985, 'lng': 7.1659 }, { 'lat': 53.2985, 'lng': 6.9992 }, { 'lat': 53.3985, 'lng': 6.9992 }, { 'lat': 53.4985, 'lng': 6.9992 }, { 'lat': 53.4985, 'lng': 6.8326 }, { 'lat': 53.4985, 'lng': 6.6659 }, { 'lat': 53.5984, 'lng': 6.6659 }, { 'lat': 53.6984, 'lng': 6.6659 }, { 'lat': 53.6984, 'lng': 6.8326 }, { 'lat': 53.6984, 'lng': 6.9992 }, { 'lat': 53.7984, 'lng': 6.9992 }, { 'lat': 53.7984, 'lng': 7.1659 }, { 'lat': 53.7984, 'lng': 7.3325 }, { 'lat': 53.7984, 'lng': 7.4991 }, { 'lat': 53.7984, 'lng': 7.6658 }, { 'lat': 53.7984, 'lng': 7.8324 }, { 'lat': 53.7984, 'lng': 7.9991 }, { 'lat': 53.7984, 'lng': 8.1657 }, { 'lat': 53.6984, 'lng': 8.1657 }, { 'lat': 53.6984, 'lng': 8.3324 }, { 'lat': 53.7984, 'lng': 8.3324 }, { 'lat': 53.8984, 'lng': 8.3324 }, { 'lat': 53.9984, 'lng': 8.3324 }, { 'lat': 53.9984, 'lng': 8.499 }, { 'lat': 53.9984, 'lng': 8.6656 }, { 'lat': 54.0984, 'lng': 8.6656 }, { 'lat': 54.1984, 'lng': 8.6656 }, { 'lat': 54.1984, 'lng': 8.499 }, { 'lat': 54.2984, 'lng': 8.499 }, { 'lat': 54.3984, 'lng': 8.499 }, { 'lat': 54.3984, 'lng': 8.3323 }, { 'lat': 54.4983, 'lng': 8.3323 }, { 'lat': 54.5983, 'lng': 8.3323 }, { 'lat': 54.5983, 'lng': 8.1657 }, { 'lat': 54.6983, 'lng': 8.1657 }, { 'lat': 54.7983, 'lng': 8.1657 }, { 'lat': 54.8983, 'lng': 8.1657 }, { 'lat': 54.9983, 'lng': 8.1657 }, { 'lat': 54.9983, 'lng': 8.3323 }, { 'lat': 55.0983, 'lng': 8.3323 }, { 'lat': 55.0983, 'lng': 8.499 }, { 'lat': 54.9983, 'lng': 8.499 }, { 'lat': 54.9983, 'lng': 8.6656 }, { 'lat': 54.9983, 'lng': 8.8323 }, { 'lat': 54.9983, 'lng': 8.9989 }, { 'lat': 54.8983, 'lng': 8.9989 }, { 'lat': 54.8983, 'lng': 9.1655 }, { 'lat': 54.8983, 'lng': 9.3322 }, { 'lat': 54.8983, 'lng': 9.4988 }, { 'lat': 54.8983, 'lng': 9.6655 }, { 'lat': 54.8983, 'lng': 9.8321 }, { 'lat': 54.7983, 'lng': 9.8321 }, { 'lat': 54.7983, 'lng': 9.9987 }, { 'lat': 54.6983, 'lng': 9.9987 }, { 'lat': 54.6983, 'lng': 10.1654 }, { 'lat': 54.5983, 'lng': 10.1654 }, { 'lat': 54.4984, 'lng': 10.1654 }, { 'lat': 54.4984, 'lng': 10.332 }, { 'lat': 54.4984, 'lng': 10.4987 }, { 'lat': 54.3984, 'lng': 10.4987 }, { 'lat': 54.3984, 'lng': 10.6653 }, { 'lat': 54.3984, 'lng': 10.832 }, { 'lat': 54.3984, 'lng': 10.9986 }, { 'lat': 54.4984, 'lng': 10.9986 }, { 'lat': 54.5984, 'lng': 10.9986 }, { 'lat': 54.5984, 'lng': 11.1652 }, { 'lat': 54.5984, 'lng': 11.3319 }, { 'lat': 54.4984, 'lng': 11.3319 }, { 'lat': 54.3984, 'lng': 11.3319 }, { 'lat': 54.3984, 'lng': 11.1652 }, { 'lat': 54.2984, 'lng': 11.1652 }, { 'lat': 54.1984, 'lng': 11.1652 }, { 'lat': 54.0984, 'lng': 11.1652 }, { 'lat': 54.0984, 'lng': 11.3319 }, { 'lat': 54.0984, 'lng': 11.4985 }, { 'lat': 54.1984, 'lng': 11.4985 }, { 'lat': 54.1984, 'lng': 11.6652 }, { 'lat': 54.1984, 'lng': 11.8318 }, { 'lat': 54.1984, 'lng': 11.9984 }, { 'lat': 54.1984, 'lng': 12.1651 }, { 'lat': 54.2984, 'lng': 12.1651 }, { 'lat': 54.2984, 'lng': 12.3317 }, { 'lat': 54.3984, 'lng': 12.3317 }, { 'lat': 54.4984, 'lng': 12.3317 }, { 'lat': 54.4984, 'lng': 12.4984 }, { 'lat': 54.4984, 'lng': 12.665 }, { 'lat': 54.4984, 'lng': 12.8316 }, { 'lat': 54.4984, 'lng': 12.9983 }, { 'lat': 54.5984, 'lng': 12.9983 }, { 'lat': 54.5984, 'lng': 13.1649 }, { 'lat': 54.6984, 'lng': 13.1649 }, { 'lat': 54.6984, 'lng': 13.3316 }, { 'lat': 54.6984, 'lng': 13.4982 }, { 'lat': 54.5984, 'lng': 13.4982 }, { 'lat': 54.5984, 'lng': 13.6648 }, { 'lat': 54.4984, 'lng': 13.6648 }, { 'lat': 54.3984, 'lng': 13.6648 }, { 'lat': 54.3984, 'lng': 13.8315 }, { 'lat': 54.2984, 'lng': 13.8315 }, { 'lat': 54.2984, 'lng': 13.9981 }, { 'lat': 54.1984, 'lng': 13.9981 }, { 'lat': 54.0984, 'lng': 13.9981 }, { 'lat': 54.0984, 'lng': 14.1648 }, { 'lat': 53.9984, 'lng': 14.1648 }, { 'lat': 53.9984, 'lng': 14.3314 }, { 'lat': 53.8985, 'lng': 14.3314 }, { 'lat': 53.7985, 'lng': 14.3314 }, { 'lat': 53.6985, 'lng': 14.3314 }, { 'lat': 53.5985, 'lng': 14.3314 }, { 'lat': 53.4985, 'lng': 14.3314 }, { 'lat': 53.4985, 'lng': 14.4981 }, { 'lat': 53.3985, 'lng': 14.4981 }, { 'lat': 53.2985, 'lng': 14.4981 }, { 'lat': 53.1985, 'lng': 14.4981 }, { 'lat': 53.0985, 'lng': 14.4981 }, { 'lat': 52.9986, 'lng': 14.4981 }, { 'lat': 52.9986, 'lng': 14.3314 }, { 'lat': 52.8986, 'lng': 14.3314 }, { 'lat': 52.7986, 'lng': 14.3315 }, { 'lat': 52.7986, 'lng': 14.4981 }, { 'lat': 52.6986, 'lng': 14.4981 }, { 'lat': 52.6986, 'lng': 14.6647 }, { 'lat': 52.5986, 'lng': 14.6647 }, { 'lat': 52.4986, 'lng': 14.6647 }, { 'lat': 52.3986, 'lng': 14.6647 }, { 'lat': 52.2986, 'lng': 14.6647 }, { 'lat': 52.2986, 'lng': 14.8314 }, { 'lat': 52.1987, 'lng': 14.8314 }, { 'lat': 52.0987, 'lng': 14.8314 }, { 'lat': 51.9987, 'lng': 14.8314 }, { 'lat': 51.8987, 'lng': 14.8314 }, { 'lat': 51.8987, 'lng': 14.6648 }, { 'lat': 51.7987, 'lng': 14.6648 }, { 'lat': 51.7987, 'lng': 14.8314 }, { 'lat': 51.6987, 'lng': 14.8314 }, { 'lat': 51.5987, 'lng': 14.8314 }, { 'lat': 51.4987, 'lng': 14.8314 }, { 'lat': 51.4987, 'lng': 14.9981 }, { 'lat': 51.3987, 'lng': 14.9981 }, { 'lat': 51.3987, 'lng': 15.1647 }, { 'lat': 51.2988, 'lng': 15.1647 }, { 'lat': 51.1988, 'lng': 15.1647 }, { 'lat': 51.0988, 'lng': 15.1647 }, { 'lat': 51.0988, 'lng': 14.9981 }, { 'lat': 50.9988, 'lng': 14.9981 }, { 'lat': 50.8988, 'lng': 14.9981 }, { 'lat': 50.8988, 'lng': 14.8314 }, { 'lat': 50.7988, 'lng': 14.8314 }, { 'lat': 50.7988, 'lng': 14.6648 }, { 'lat': 50.7988, 'lng': 14.4981 }, { 'lat': 50.7988, 'lng': 14.3315 }, { 'lat': 50.7988, 'lng': 14.1649 }, { 'lat': 50.7988, 'lng': 13.9982 }, { 'lat': 50.6988, 'lng': 13.9982 }, { 'lat': 50.6988, 'lng': 13.8316 }, { 'lat': 50.6988, 'lng': 13.6649 }, { 'lat': 50.5988, 'lng': 13.6649 }, { 'lat': 50.5988, 'lng': 13.4983 }, { 'lat': 50.5988, 'lng': 13.3317 }, { 'lat': 50.4988, 'lng': 13.3317 }, { 'lat': 50.4988, 'lng': 13.165 }, { 'lat': 50.3988, 'lng': 13.165 }, { 'lat': 50.3988, 'lng': 12.9984 }, { 'lat': 50.3988, 'lng': 12.8317 }, { 'lat': 50.3988, 'lng': 12.6651 }, { 'lat': 50.2988, 'lng': 12.6651 }, { 'lat': 50.2988, 'lng': 12.4984 }, { 'lat': 50.1988, 'lng': 12.4984 }, { 'lat': 50.1988, 'lng': 12.3318 }, { 'lat': 50.0989, 'lng': 12.3318 }, { 'lat': 50.0989, 'lng': 12.4984 }, { 'lat': 49.9989, 'lng': 12.4985 }, { 'lat': 49.9989, 'lng': 12.6651 }, { 'lat': 49.8989, 'lng': 12.6651 }, { 'lat': 49.7989, 'lng': 12.6651 }, { 'lat': 49.7989, 'lng': 12.4985 }, { 'lat': 49.6989, 'lng': 12.4985 }, { 'lat': 49.6989, 'lng': 12.6651 }, { 'lat': 49.5989, 'lng': 12.6651 }, { 'lat': 49.4989, 'lng': 12.6651 }, { 'lat': 49.4989, 'lng': 12.8317 }, { 'lat': 49.3989, 'lng': 12.8317 }, { 'lat': 49.3989, 'lng': 12.9984 }, { 'lat': 49.299, 'lng': 12.9984 }, { 'lat': 49.299, 'lng': 13.165 }, { 'lat': 49.199, 'lng': 13.165 }, { 'lat': 49.199, 'lng': 13.3317 }, { 'lat': 49.099, 'lng': 13.3317 }, { 'lat': 49.099, 'lng': 13.4983 }, { 'lat': 48.999, 'lng': 13.4983 }, { 'lat': 48.999, 'lng': 13.665 }, { 'lat': 48.899, 'lng': 13.665 }, { 'lat': 48.899, 'lng': 13.8316 }, { 'lat': 48.799, 'lng': 13.8316 }, { 'lat': 48.699, 'lng': 13.8316 }, { 'lat': 48.599, 'lng': 13.8316 }, { 'lat': 48.499, 'lng': 13.8316 }, { 'lat': 48.499, 'lng': 13.665 }, { 'lat': 48.499, 'lng': 13.4983 }, { 'lat': 48.3991, 'lng': 13.4983 }, { 'lat': 48.2991, 'lng': 13.4983 }, { 'lat': 48.2991, 'lng': 13.3317 }, { 'lat': 48.2991, 'lng': 13.1651 }, { 'lat': 48.1991, 'lng': 13.1651 }, { 'lat': 48.1991, 'lng': 12.9984 }, { 'lat': 48.1991, 'lng': 12.8318 }, { 'lat': 48.0991, 'lng': 12.8318 }, { 'lat': 47.9991, 'lng': 12.8318 }, { 'lat': 47.9991, 'lng': 12.9984 }, { 'lat': 47.8991, 'lng': 12.9984 }, { 'lat': 47.7991, 'lng': 12.9984 }, { 'lat': 47.6991, 'lng': 12.9984 }, { 'lat': 47.6991, 'lng': 13.1651 }, { 'lat': 47.5991, 'lng': 13.1651 }, { 'lat': 47.4992, 'lng': 13.1651 }, { 'lat': 47.3992, 'lng': 13.1651 }, { 'lat': 47.3992, 'lng': 12.9984 }, { 'lat': 47.3992, 'lng': 12.8318 }, { 'lat': 54.0984, 'lng': 7.8324 }, { 'lat': 54.1984, 'lng': 7.8324 }, { 'lat': 54.1984, 'lng': 7.9991 }, { 'lat': 54.0984, 'lng': 7.9991 }, { 'lat': 54.0984, 'lng': 7.8324 }]
-
-L.mask(tk25).addTo(map);
-
-function setBrutvogelartenAColor(d) {
-  return d > 4 ? '#91191e'
-    : d > 3 ? '#ef2e21'
-      : d > 1 ? '#f3b710'
-        : d > 0 ? '#eaee26'
-          : '#FFFFFF';
-}
-
-function BrutvogelartenAStyle(feature) {
-  return {
-    fillColor: setBrutvogelartenAColor(feature.properties.Anzahl_A),
-    weight: 1,
-    opacity: 0.7,
-    color: 'white',
-    fillOpacity: 0.7
-  };
-}
-
-function setBrutvogelartenBColor(d) {
-  return d > 5 ? '#91191e'
-    : d > 2 ? '#ef2e21'
-      : d > 1 ? '#f3b710'
-        : d > 0 ? '#eaee26'
-          : '#FFFFFF';
-}
-
-function BrutvogelartenBStyle(feature) {
-  return {
-    fillColor: setBrutvogelartenBColor(feature.properties.Anzahl_B),
-    weight: 1,
-    opacity: 0.7,
-    color: 'white',
-    fillOpacity: 0.7
-  };
-}
-
-function setBrutvogelartenCColor(d) {
-  return d > 24 ? '#91191e'
-    : d > 19 ? '#ef2e21'
-      : d > 15 ? '#f3b710'
-        : d > 0 ? '#eaee26'
-          : '#FFFFFF';
-}
-
-function BrutvogelartenCStyle(feature) {
-  return {
-    fillColor: setBrutvogelartenCColor(feature.properties.Anzahl_C),
-    weight: 1,
-    opacity: 0.7,
-    color: 'white',
-    fillOpacity: 0.7
-  };
-}
-
-function seBrutvogelArtenABCColor(d) {
-  return d > 31 ? '#91191e'
-    : d > 24 ? '#ef2e21'
-      : d > 17 ? '#f3b710'
-        : d > 0 ? '#eaee26'
-          : '#FFFFFF';
-}
-
-function BrutvogelartenABCStyle(feature) {
-  return {
-    fillColor: seBrutvogelArtenABCColor(feature.properties.Anzahl_ABC),
-    weight: 1,
-    opacity: 0.7,
-    color: 'white',
-    fillOpacity: 0.7
-  };
-}
-
 var stylesBrutvogelarten = {
-  'BrutvogelartenA': BrutvogelartenAStyle,
-  'BrutvogelartenB': BrutvogelartenBStyle,
-  'BrutvogelartenC': BrutvogelartenCStyle,
-  'BrutvogelartenABC': BrutvogelartenABCStyle
+  'BrutvogelartenA': {
+    property: 'Anzahl_A',
+    type: 'interval',
+    stops: [
+      [0, '#FFFFFF'],
+      [1.0, '#eaee26'],
+      [2.0, '#f3b710'],
+      [3.0, '#f3b710'],
+      [4.0, '#ef2e21'],
+      [5.0, '#91191e']
+    ]
+  },
+  'BrutvogelartenB': {
+    property: 'Anzahl_B',
+    type: 'interval',
+    stops: [
+      [0, '#FFFFFF'],
+      [1.0, '#eaee26'],
+      [2.0, '#f3b710'],
+      [3.0, '#ef2e21'],
+      [4.0, '#ef2e21'],
+      [6.0, '#91191e']
+    ]
+  },
+  'BrutvogelartenC': {
+    property: 'Anzahl_C',
+    type: 'interval',
+    stops: [
+      [0, '#FFFFFF'],
+      [1.0, '#eaee26'],
+      [16.0, '#f3b710'],
+      [20.0, '#ef2e21'],
+      [24.0, '#ef2e21'],
+      [25.0, '#91191e']
+    ]
+  },
+  'BrutvogelartenABC': {
+    property: 'Anzahl_ABC',
+    type: 'interval',
+    stops: [
+      [0, '#FFFFFF'],
+      [1.0, '#eaee26'],
+      [18.0, '#f3b710'],
+      [25.0, '#ef2e21'],
+      [31.0, '#ef2e21'],
+      [32.0, '#91191e']
+    ]
+  }
 };
 
-var sensitivitaetskarte;
-// load GeoJSON from an external file
-$.getJSON('data/Sensitivitaetskarte_wgs84.geojson', function(data) {
-  // Radio buttons to let the user choose the ethny to use for colors.
-  sensitivitaetskarte = L.geoJson(data, {
-    // style: BrutvogelartenAStyle
-  })
-});
+map.on('load', function() {
+  map.addLayer({
+    'id': 'sensitivitaetskarte',
+    'source': {
+      'type': 'geojson',
+      'data': 'data/Sensitivitaetskarte_wgs84.geojson'
+    },
+    'type': 'fill',
+    'layout': {
+      'visibility': 'none'
+    },
+    'paint': { 'fill-opacity': 0.75 }
+  });
 
-$('input[name=brutvogelarten]').change(function() {
-  // Uncheck other checkboxes
-  $('input[name=brutvogelarten]').not(this).prop('checked', false);
-  // Removed other legends
-  $('.brutvogelarten.layer-legend').not(this).removeClass('active');
+  $('input[name=brutvogelarten]').change(function() {
+    // Uncheck other checkboxes
+    $('input[name=brutvogelarten]').not(this).prop('checked', false);
+    // Removed other legends
+    $('.brutvogelarten.layer-legend').not(this).removeClass('active');
 
-  // Deal with actual checkbox
-  var id = $(this).attr('id');
-  if ($(this).is(':checked')) {
-    sensitivitaetskarte.removeFrom(map);
-    sensitivitaetskarte.setStyle(stylesBrutvogelarten[id]);
-    sensitivitaetskarte.addTo(map);
-    sensitivitaetskarte.bringToBack();
-  } else {
-    sensitivitaetskarte.removeFrom(map);
-  }
-});
-
-var iba;
-// load GeoJSON from an external file
-$.getJSON('data/iba.geojson', function(data) {
-  // Radio buttons to let the user choose the ethny to use for colors.
-  iba = L.geoJson(data, {
-    style: {
-      'color': '#15534C',
-      'weight': '1.5'
-    }
-  })
-});
-
-$('input[name=iba]').change(function() {
-  // Deal with actual checkbox
-  // var id = $(this).attr("id");
-  if ($(this).is(':checked')) {
-    iba.addTo(map);
-  } else {
-    iba.removeFrom(map);
-  }
-});
-
-var powerlines = {
-}
-
-var powerlines380000;
-// load GeoJSON from an external file
-$.getJSON('data/powerlines_380000.geojson', function(data) {
-  // Radio buttons to let the user choose the ethny to use for colors.
-  powerlines380000 = L.geoJson(data, {
-    style: {
-      weight: 2,
-      color: '#4b86b7'
-    }
-  })
-  powerlines['powerlines_380000'] = powerlines380000
-});
-var powerlines220000;
-// load GeoJSON from an external file
-$.getJSON('data/powerlines_220000.geojson', function(data) {
-  // Radio buttons to let the user choose the ethny to use for colors.
-  powerlines220000 = L.geoJson(data, {
-    style: {
-      weight: 1.5,
-      color: '#dd1e1c'
-    }
-  })
-  powerlines['powerlines_220000'] = powerlines220000
-});
-// var powerlines110000;
-/// / load GeoJSON from an external file
-// $.getJSON('data/powerlines_110000.geojson', function(data) {
-//  // Radio buttons to let the user choose the ethny to use for colors.
-//  powerlines110000 = L.geoJson(data, {
-//    style: {
-//      weight: 1,
-//      color: '#5aae58'
-//    }
-//  });
-//  powerlines['powerlines_110000'] = powerlines110000
-// });
-
-$('input[name=powerlines]').change(function() {
-  // Deal with actual checkbox
-  var id = $(this).attr('id');
-  console.log(id);
-  if ($(this).is(':checked')) {
-    powerlines[id].removeFrom(map);
-    powerlines[id].addTo(map);
-    powerlines[id].bringToFront();
-  } else {
-    powerlines[id].removeFrom(map);
-  }
-});
-
-$('input[name=baselayer]').change(function() {
-  // Uncheck other checkboxes
-  $('input[name=baselayer]').not(this).prop('checked', false);
-  // Deal with actual checkbox
-  var id = $(this).attr('id');
-  console.log(id);
-  if (id === 'osm') {
+    // Deal with actual checkbox
+    var id = $(this).attr('id');
+    console.log(id);
     if ($(this).is(':checked')) {
-      satellite.removeFrom(map);
-      osm.addTo(map);
+      map.setPaintProperty('sensitivitaetskarte', 'fill-color', stylesBrutvogelarten[id]
+      );
+      map.setLayoutProperty('sensitivitaetskarte', 'visibility', 'visible');
     } else {
-      osm.removeFrom(map);
+      map.setLayoutProperty('sensitivitaetskarte', 'visibility', 'none');
     }
-  } else if (id === 'satellite') {
+  });
+
+  map.addLayer({
+    'id': 'iba',
+    'source': {
+      'type': 'geojson',
+      'data': 'data/iba.geojson'
+    },
+    'type': 'fill',
+    'layout': {
+      'visibility': 'none'
+    },
+    'paint': {
+      'fill-color': '#15534C',
+      'fill-opacity': 0.8
+
+    }
+  });
+
+  $('input[name=iba]').change(function() {
+    // Deal with actual checkbox
+    // var id = $(this).attr("id");
     if ($(this).is(':checked')) {
-      osm.removeFrom(map);
-      satellite.addTo(map);
+      map.setLayoutProperty('iba', 'visibility', 'visible');
     } else {
-      satellite.removeFrom(map);
+      map.setLayoutProperty('iba', 'visibility', 'none');
     }
-  }
-});
+  });
 
-$('.iba.layer-legend').change(function() {
-  $(this).next().toggleClass('active');
-  $(this).next().slideToggle('slow')
-});
+  map.addLayer({
+    'id': 'powerlines110000',
+    'source': {
+      'type': 'geojson',
+      'data': 'data/powerlines_110000.geojson'
+    },
+    'type': 'line',
+    'layout': {
+      'visibility': 'none'
+    },
+    'paint': {
+      'line-color': '#5aae58',
+      'line-width': 1.5
+    }
+  });
+  map.addLayer({
+    'id': 'powerlines220000',
+    'source': {
+      'type': 'geojson',
+      'data': 'data/powerlines_220000.geojson'
+    },
+    'type': 'line',
+    'layout': {
+      'visibility': 'none'
+    },
+    'paint': {
+      'line-color': '#dd1e1c',
+      'line-width': 2
+    }
+  });
+  map.addLayer({
+    'id': 'powerlines380000',
+    'source': {
+      'type': 'geojson',
+      'data': 'data/powerlines_380000.geojson'
+    },
+    'type': 'line',
+    'layout': {
+      'visibility': 'none'
+    },
+    'paint': {
+      'line-color': '#4b86b7',
+      'line-width': 2.5
+    }
+  });
 
-$('.brutvogelarten.layer-legend').change(function() {
-  $('.brutvogelarten.layer-legend').not(this).next('.active').slideToggle('slow');
-  $('.brutvogelarten.layer-legend').not(this).next().removeClass('active');
+  $('input[name=powerlines]').change(function() {
+    // Deal with actual checkbox
+    var id = $(this).attr('id');
+    if ($(this).is(':checked')) {
+      map.setLayoutProperty(id, 'visibility', 'visible');
+    } else {
+      map.setLayoutProperty(id, 'visibility', 'none');
+    }
+  });
 
-  $(this).next().toggleClass('active');
-  $(this).next().slideToggle('slow')
-});
+  map.addLayer({
+    'id': 'satellite',
+    'type': 'raster',
+    'source': {
+      'type': 'raster',
+      'tiles': [
+        'https://tiles.maps.eox.at/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=s2cloudless_3857'
+      ],
+      'tileSize': 256
+    },
+    'layout': {
+      'visibility': 'none'
+    },
+    'paint': {},
+    'minzoom': 7,
+    'maxzoom': 14
+  });
 
-$('.brutvogelarten.layer-legend').each(function() {
-  var b = $(this).find('input[name=brutvogelarten]').attr('id');
-  var a = [];
-  switch (b) {
-    case 'BrutvogelartenA':
-      a = [
-        [0, '#ffffff'],
-        [0, '#eaee26'],
-        [1, '#f3b710'],
-        [3, '#ef2e21'],
-        [4, '#91191e']
-      ];
-      break;
-    case 'BrutvogelartenB':
-      a = [
-        [0, '#ffffff'],
-        [0, '#eaee26'],
-        [1, '#f3b710'],
-        [2, '#ef2e21'],
-        [5, '#91191e']
-      ];
-      break;
-    case 'BrutvogelartenC':
-      a = [
-        [0, '#ffffff'],
-        [0, '#eaee26'],
-        [15, '#f3b710'],
-        [19, '#ef2e21'],
-        [24, '#91191e']
-      ];
-      break;
-    case 'BrutvogelartenABC':
-      a = [
-        [0, '#ffffff'],
-        [0, '#eaee26'],
-        [17, '#f3b710'],
-        [24, '#ef2e21'],
-        [31, '#91191e']
-      ];
-      break;
-    default:
-      console.log("Sorry, we haven't found a legend style for " + b + '.');
-  }
-  var d = 100 / a.length;
-  var e = '<div class="legend-colors">';
-  for (var c = 0; c < a.length; c++) e += '<span style="width:' + d + '%; background-color:' + a[c][1] + ';" ></span>';
-  for (c = 0; c < a.length; c++) {
-    var f = '';
-    f = c === 0 ? a[c + 1][0] : c === a.length - 1 ? '> ' + a[c][0] : '> ' + a[c][0] + ' - ' + a[c + 1][0];
-    e += '<span style="width:' + d + '%;">' + f + '</span>'
-  }
-  e += '</div';
-  $(this).next().append(e)
+  $('input[name=baselayer]').change(function() {
+    // Uncheck other checkboxes
+    $('input[name=baselayer]').not(this).prop('checked', false);
+    // Deal with actual checkbox
+    var id = $(this).attr('id');
+    if ($(this).is(':checked')) {
+      map.setLayoutProperty(id, 'visibility', 'visible');
+    } else {
+      map.setLayoutProperty(id, 'visibility', 'none');
+    }
+  });
+
+  // $('.iba.layer-legend').change(function() {
+  //  $(this).next().toggleClass('active');
+  //  $(this).next().slideToggle('slow')
+  // });
+  //
+  $('.brutvogelarten.layer-legend').change(function() {
+    $('.brutvogelarten.layer-legend').not(this).next('.active').slideToggle('slow');
+    $('.brutvogelarten.layer-legend').not(this).next().removeClass('active');
+
+    $(this).next().toggleClass('active');
+    $(this).next().slideToggle('slow')
+  });
+
+  $('.brutvogelarten.layer-legend').each(function() {
+    var b = $(this).find('input[name=brutvogelarten]').attr('id');
+    var a = [];
+    switch (b) {
+      case 'BrutvogelartenA':
+        a = [
+          [0, '#ffffff'],
+          [0, '#eaee26'],
+          [1, '#f3b710'],
+          [3, '#ef2e21'],
+          [4, '#91191e']
+        ];
+        break;
+      case 'BrutvogelartenB':
+        a = [
+          [0, '#ffffff'],
+          [0, '#eaee26'],
+          [1, '#f3b710'],
+          [2, '#ef2e21'],
+          [5, '#91191e']
+        ];
+        break;
+      case 'BrutvogelartenC':
+        a = [
+          [0, '#ffffff'],
+          [0, '#eaee26'],
+          [15, '#f3b710'],
+          [19, '#ef2e21'],
+          [24, '#91191e']
+        ];
+        break;
+      case 'BrutvogelartenABC':
+        a = [
+          [0, '#ffffff'],
+          [0, '#eaee26'],
+          [17, '#f3b710'],
+          [24, '#ef2e21'],
+          [31, '#91191e']
+        ];
+        break;
+      default:
+        console.log("Sorry, we haven't found a legend style for " + b + '.');
+    }
+    var d = 100 / a.length;
+    var e = '<div class="legend-colors">';
+    for (var c = 0; c < a.length; c++) e += '<span style="width:' + d + '%; background-color:' + a[c][1] + ';" ></span>';
+    for (c = 0; c < a.length; c++) {
+      var f = '';
+      f = c === 0 ? a[c + 1][0] : c === a.length - 1 ? '> ' + a[c][0] : '> ' + a[c][0] + ' - ' + a[c + 1][0];
+      e += '<span style="width:' + d + '%;">' + f + '</span>'
+    }
+    e += '</div';
+    $(this).next().append(e)
+  });
 });

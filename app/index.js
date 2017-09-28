@@ -4,7 +4,7 @@ import mapboxgl from 'mapbox-gl'
 
 // https://css-tricks.com/css-modules-part-2-getting-started/
 // https://medium.com/@rajaraodv/webpack-the-confusing-parts-58712f8fcad9#.txbwrns34
-import '../node_modules/leaflet/dist/leaflet.css';
+import '../node_modules/mapbox-gl/dist/mapbox-gl.css';
 import '../node_modules/uikit/dist/css/uikit.css';
 import '../css/index.css';
 
@@ -30,26 +30,29 @@ var map = new mapboxgl.Map({
       'id': 'osm',
       'type': 'raster',
       'source': 'osm',
-      'minzoom': 0,
-      'maxzoom': 22
+      'minzoom': 5,
+      'maxzoom': 18
     }]
   },
-  center: [9, 52.77],
-  zoom: 7
+  center: [6.402, 51.638],
+  zoom: 5.33
 });
 
-// disable map rotation using right click + drag
-map.dragRotate.disable();
+/// / disable map rotation using right click + drag
+// map.dragRotate.disable();
+//
+/// / disable map rotation using touch rotation gesture
+// map.touchZoomRotate.disableRotation();
+//
+// map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+/// / disable map rotation using right click + drag
+// map.dragRotate.disable();
 
-// disable map rotation using touch rotation gesture
-map.touchZoomRotate.disableRotation();
-
-map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-// disable map rotation using right click + drag
-map.dragRotate.disable();
-
-// // disable map rotation using touch rotation gesture
-map.touchZoomRotate.disableRotation();
+map.addControl(new mapboxgl.NavigationControl());
+map.addControl(new mapboxgl.ScaleControl({
+  maxWidth: 200,
+  unit: 'metric'
+}));
 
 $(window).width() < 599 ? $('.intro-sidebar').html('Datensätze anzeigen.') : $('.intro-sidebar').html('Hier können Sie sich verschiedene Datensätze anzeigen lassen, um interaktiv die Daten zu den Vogelkollisionen zu erkunden.');
 
@@ -242,7 +245,7 @@ map.on('load', function() {
     'paint': {},
     'minzoom': 7,
     'maxzoom': 14
-  });
+  }, 'sensitivitaetskarte');
 
   $('input[name=baselayer]').change(function() {
     // Uncheck other checkboxes

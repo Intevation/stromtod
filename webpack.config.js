@@ -17,9 +17,9 @@ module.exports = {
   },
   // https://webpack.js.org/configuration/devtool/
   // for production
-  devtool: 'nosources-source-map',
+  // devtool: 'nosources-source-map',
   // for development
-  // devtool: 'eval-source-map',
+  devtool: 'eval-source-map',
   devServer: {
     compress: true,
     port: 9000
@@ -38,6 +38,10 @@ module.exports = {
       test: /\.js$/,
       exclude: /node_modules/,
       loader: 'eslint-loader'
+    },
+    {
+      test: /\.json$/,
+      loader: 'json-loader'
     },
     {
       test: /\.js$/,
@@ -86,7 +90,7 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"production"'
+      'process.env.NODE_ENV': '"development"'
     }),
     new CompressionPlugin({
       asset: '[path].gz[query]',
@@ -99,13 +103,13 @@ module.exports = {
       filename: 'bundle.css',
       disable: false,
       allChunks: true
-    }),
-    function() {
-      this.plugin('done', function(stats) {
-        require('fs').writeFileSync(
-          path.join(__dirname, 'dist', 'stats.json'),
-          JSON.stringify(stats.toJson()));
-      });
-    }
+    })
+    // function() {
+    //  this.plugin('done', function(stats) {
+    //    require('fs').writeFileSync(
+    //      path.join(__dirname, 'dist', 'stats.json'),
+    //      JSON.stringify(stats.toJson()));
+    //  });
+    // }
   ]
 };

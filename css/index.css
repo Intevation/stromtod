@@ -692,3 +692,13 @@ div#modal-full div.uk-modal-dialog div.uk-padding-large div.wrapper.contact div.
 div#modal-full div.uk-modal-dialog div.uk-padding-large div.org {
     padding: 0 0 5% 0;
 }
+
+#features {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 300px;
+    overflow: auto;
+    background: rgba(255, 255, 255, 0.8);
+}

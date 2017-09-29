@@ -42,6 +42,12 @@ var map = new mapboxgl.Map({
   zoom: 5.33
 });
 
+map.on('mousemove', function(e) {
+  map.queryRenderedFeatures(e.point).length ? map.getCanvas().style.cursor = 'pointer' : map.getCanvas().style.cursor = ''
+  var features = map.queryRenderedFeatures(e.point);
+  document.getElementById('features').innerHTML = JSON.stringify(features, null, 2);
+});
+
 /// / disable map rotation using right click + drag
 // map.dragRotate.disable();
 //

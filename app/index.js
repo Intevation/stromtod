@@ -2,6 +2,7 @@ import $ from 'jquery';
 import mapboxgl from 'mapbox-gl';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
+import csv2geojson from 'csv2geojson';
 
 // https://css-tricks.com/css-modules-part-2-getting-started/
 // https://medium.com/@rajaraodv/webpack-the-confusing-parts-58712f8fcad9#.txbwrns34
@@ -125,6 +126,39 @@ var stylesBrutvogelarten = {
 };
 
 map.on('load', function() {
+  $.ajax({
+    type: 'GET',
+    url: 'data/stromtod.csv',
+    dataType: 'text',
+    success: function(csvData) { makeGeoJSON(csvData); }
+  });
+
+  function makeGeoJSON(csvData) {
+    csv2geojson.csv2geojson(csvData, {
+      latfield: 'lat',
+      lonfield: 'lon',
+      delimiter: ';'
+    }, function(err, data) {
+      if (err) {
+        console.log(err.stack);
+      }
+      map.addLayer({
+        'id': 'totfunde',
+        'type': 'circle',
+        'source': {
+          'type': 'geojson',
+          'data': data
+        },
+        'layout': {
+          'visibility': 'visible'
+        },
+        'paint': {
+          'circle-color': '#000000'
+        }
+      });
+    })
+  };
+
   map.addLayer({
     'id': 'sensitivitaetskarte',
     'source': {

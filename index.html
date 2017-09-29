@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Stromtod</title> <link rel="stylesheet" type="text/css" href="dist/bundle.css" />
+    <title>Stromtod</title>
+    <link rel="stylesheet" type="text/css" href="dist/bundle.css" />
     <!--  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY" async defer></script> -->
-	<script src="https://maps.googleapis.com/maps/api/js" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js" async defer></script>
 </head>
 
 <body>
@@ -37,55 +38,6 @@
                 <p class="intro-sidebar"></p>
                 <div class="sidebar-accordeon">
                     <ul uk-accordion>
-                        <li>
-                            <h3 class="uk-accordion-title">Anzahl Brutvogelarten</h3>
-                            <div class="uk-accordion-content">
-                                <div class="layer brutvogelarten layer-legend">
-                                    <div class="title">
-                                        <span>Gefährdungsklasse A</span>
-                                        <span class="tooltip" title="Sehr hohe Gefährdung" uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
-                                    </div>
-                                    <div class="switch">
-                                        <input type="checkbox" name="brutvogelarten" id="BrutvogelartenA" class="ios-toggle" />
-                                        <label for="BrutvogelartenA" class="checkbox-label" data-off="aus" data-on="an"></label>
-                                    </div>
-                                </div>
-                                <div class="legend"></div>
-                                <div class="layer brutvogelarten layer-legend">
-                                    <div class="title">
-                                        <span>Gefährdungsklasse B</span>
-                                        <span class="tooltip" title="Hohe Gefährdung" uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
-                                    </div>
-                                    <div class="switch">
-                                        <input type="checkbox" name="brutvogelarten" id="BrutvogelartenB" class="ios-toggle" />
-                                        <label for="BrutvogelartenB" class="checkbox-label" data-off="aus" data-on="an"></label>
-                                    </div>
-                                </div>
-                                <div class="legend"></div>
-                                <div class="layer brutvogelarten layer-legend">
-                                    <div class="title">
-                                        <span>Gefährdungsklasse C</span>
-                                        <span class="tooltip" title="Mittlere Gefährdung" uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
-                                    </div>
-                                    <div class="switch">
-                                        <input type="checkbox" name="brutvogelarten" id="BrutvogelartenC" class="ios-toggle" />
-                                        <label for="BrutvogelartenC" class="checkbox-label" data-off="aus" data-on="an"></label>
-                                    </div>
-                                </div>
-                                <div class="legend"></div>
-                                <div class="layer brutvogelarten layer-legend">
-                                    <div class="title">
-                                        <span>Gefährdungsklasse ABC</span>
-                                        <span class="tooltip" title="Kombination A+B+C" uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
-                                    </div>
-                                    <div class="switch">
-                                        <input type="checkbox" name="brutvogelarten" id="BrutvogelartenABC" class="ios-toggle" />
-                                        <label for="BrutvogelartenABC" class="checkbox-label" data-off="aus" data-on="an"></label>
-                                    </div>
-                                </div>
-                                <div class="legend"></div>
-                            </div>
-                        </li>
                         <li>
                             <h3 class="uk-accordion-title">Hochspannungsstromnetz</h3>
                             <div class="uk-accordion-content">
@@ -125,12 +77,63 @@
                             </div>
                         </li>
                         <li>
+                            <h3 class="uk-accordion-title">Anzahl Brutvogelarten</h3>
+                            <div class="uk-accordion-content">
+                                <div class="layer brutvogelarten layer-legend">
+                                    <div class="title">
+                                        <span>Gefährdungsklasse A</span>
+                                        <span class="tooltip" title="A: Sehr hohe Kollisionsgefährdung (23 Arten)" uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
+                                    </div>
+                                    <div class="switch">
+                                        <input type="checkbox" name="brutvogelarten" id="BrutvogelartenA" class="ios-toggle" />
+                                        <label for="BrutvogelartenA" class="checkbox-label" data-off="aus" data-on="an"></label>
+                                    </div>
+                                </div>
+                                <div class="legend"></div>
+                                <div class="layer brutvogelarten layer-legend">
+                                    <div class="title">
+                                        <span>Gefährdungsklasse B</span>
+                                        <span class="tooltip" title="B: Hohe Kollisionsgefährdung (37 Arten)" uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
+                                    </div>
+                                    <div class="switch">
+                                        <input type="checkbox" name="brutvogelarten" id="BrutvogelartenB" class="ios-toggle" />
+                                        <label for="BrutvogelartenB" class="checkbox-label" data-off="aus" data-on="an"></label>
+                                    </div>
+                                </div>
+                                <div class="legend"></div>
+                                <div class="layer brutvogelarten layer-legend">
+                                    <div class="title">
+                                        <span>Gefährdungsklasse C</span>
+                                        <span class="tooltip" title="C: Mittlere Kollisionsgefährdung (59 Arten)" uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
+                                    </div>
+                                    <div class="switch">
+                                        <input type="checkbox" name="brutvogelarten" id="BrutvogelartenC" class="ios-toggle" />
+                                        <label for="BrutvogelartenC" class="checkbox-label" data-off="aus" data-on="an"></label>
+                                    </div>
+                                </div>
+                                <div class="legend"></div>
+                                <div class="layer brutvogelarten layer-legend">
+                                    <div class="title">
+                                        <span>Gefährdungsklasse ABC</span>
+                                        <span class="tooltip" title="ABC: Kollisionsgefährdung gesamt (119 Arten)" uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
+                                    </div>
+                                    <div class="switch">
+                                        <input type="checkbox" name="brutvogelarten" id="BrutvogelartenABC" class="ios-toggle" />
+                                        <label for="BrutvogelartenABC" class="checkbox-label" data-off="aus" data-on="an"></label>
+                                    </div>
+                                </div>
+                                <div class="legend"></div>
+                            </div>
+                        </li>
+
+                        <li>
                             <h3 class="uk-accordion-title">Important Bird Areas (IBAs)</h3>
                             <div class="uk-accordion-content">
                                 <div class="layer iba layer-legend">
                                     <div class="title">
                                         <span>IBAs</span>
-                                        <span class="tooltip" title="Important Bird Areas (IBA) sind Gebiete, die nach globalen Kriterien als wichtig für den Arten- und Biotopschutz speziell für Vögel eingestuft werden." uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
+                                        <span class="tooltip" title="Important Bird Areas (IBA) sind Gebiete, die nach globalen Kriterien als wichtig für den Arten- und Biotopschutz speziell für Vögel eingestuft werden."
+                                            uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
                                     </div>
                                     <div class="switch">
                                         <input type="checkbox" name="iba" id="ramsar" class="ios-toggle" />
@@ -169,6 +172,7 @@
     </div>
 </body>
 
-    <script src="dist/vendor.bundle.js"></script>
-    <script src="dist/bundle.js"></script>
+<script src="dist/vendor.bundle.js"></script>
+<script src="dist/bundle.js"></script>
+
 </html>

@@ -1,12 +1,16 @@
 import $ from 'jquery';
-import 'uikit'
-import mapboxgl from 'mapbox-gl'
+import mapboxgl from 'mapbox-gl';
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
 
 // https://css-tricks.com/css-modules-part-2-getting-started/
 // https://medium.com/@rajaraodv/webpack-the-confusing-parts-58712f8fcad9#.txbwrns34
 import '../node_modules/mapbox-gl/dist/mapbox-gl.css';
 import '../node_modules/uikit/dist/css/uikit.css';
 import '../css/index.css';
+
+// loads the Icon plugin
+UIkit.use(Icons);
 
 var map = new mapboxgl.Map({
   container: 'map', // container id
@@ -19,9 +23,9 @@ var map = new mapboxgl.Map({
         // show a "url" property. This only applies to tilesets with
         // corresponding TileJSON (such as mapbox tiles).
         'tiles': [
-          'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          'http://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
         ],
         'tileSize': 256
       }
@@ -30,7 +34,7 @@ var map = new mapboxgl.Map({
       'id': 'osm',
       'type': 'raster',
       'source': 'osm',
-      'minzoom': 5,
+      'minzoom': 0,
       'maxzoom': 18
     }]
   },
@@ -243,7 +247,7 @@ map.on('load', function() {
       'visibility': 'none'
     },
     'paint': {},
-    'minzoom': 7,
+    'minzoom': 0,
     'maxzoom': 14
   }, 'sensitivitaetskarte');
 
@@ -254,6 +258,11 @@ map.on('load', function() {
     var id = $(this).attr('id');
     if ($(this).is(':checked')) {
       map.setLayoutProperty(id, 'visibility', 'visible');
+      if (id === 'osm') {
+        map.setLayoutProperty('satellite', 'visibility', 'none');
+      } else {
+        map.setLayoutProperty('osm', 'visibility', 'none');
+      }
     } else {
       map.setLayoutProperty(id, 'visibility', 'none');
     }
@@ -321,9 +330,9 @@ map.on('load', function() {
     for (c = 0; c < a.length; c++) {
       var f = '';
       f = c === 0 ? a[c + 1][0] : c === a.length - 1 ? '> ' + a[c][0] : '> ' + a[c][0] + ' - ' + a[c + 1][0];
-      e += '<span style="width:' + d + '%;">' + f + '</span>'
+      e += '<span style="width:' + d + '%;">' + f + ' Arten</span>'
     }
-    e += '</div';
+    e += '</div>';
     $(this).next().append(e)
   });
 });

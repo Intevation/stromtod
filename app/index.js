@@ -22,6 +22,13 @@ $('#start-btn').on('click', function() {
   $('#overlay').fadeOut(1E3);
 });
 
+var framesPerSecond = 15;
+var initialOpacity = 1
+var opacity = initialOpacity;
+var initialRadius = 8;
+var radius = initialRadius;
+var maxRadius = 18;
+
 var map = new mapboxgl.Map({
   container: 'map', // container id
   style: {
@@ -176,27 +183,55 @@ map.on('load', function() {
       if (err) {
         console.log(err.stack);
       }
+
+      map.addSource('totfunde', {
+        'type': 'geojson',
+        'data': data
+      });
+
       map.addLayer({
         'id': 'totfunde',
+        'source': 'totfunde',
         'type': 'circle',
-        'source': {
-          'type': 'geojson',
-          'data': data
-        },
-        'layout': {
-          'visibility': 'visible'
-        },
         'paint': {
-          // make circles larger as the user zooms from z12 to z22
-          'circle-radius': {
-            'base': 1.75,
-            'stops': [[12, 6], [22, 180]]
-          },
-          'circle-color': '#000000'
+          'circle-radius': initialRadius,
+          'circle-radius-transition': {duration: 0},
+          'circle-opacity-transition': {duration: 0},
+          'circle-color': '#007cbf'
+        }
+      });
+
+      map.addLayer({
+        'id': 'totfunde1',
+        'source': 'totfunde',
+        'type': 'circle',
+        'paint': {
+          'circle-radius': initialRadius,
+          'circle-color': '#007cbf'
         }
       });
     })
   };
+  function animateMarker(timestamp) {
+    setTimeout(function() {
+      requestAnimationFrame(animateMarker);
+
+      radius += (maxRadius - radius) / framesPerSecond;
+      opacity -= (0.9 / framesPerSecond);
+
+      map.setPaintProperty('totfunde', 'circle-radius', radius);
+      map.setPaintProperty('totfunde', 'circle-opacity', opacity);
+
+      if (opacity <= 0) {
+        radius = initialRadius;
+        opacity = initialOpacity;
+      }
+    }, 1000 / framesPerSecond);
+  }
+
+  // Start the animation.
+  animateMarker(0);
+
   $('input[name=totfunde]').change(function() {
     // Deal with actual checkbox
     // var id = $(this).attr("id");

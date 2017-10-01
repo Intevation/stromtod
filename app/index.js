@@ -248,8 +248,10 @@ map.on('load', function() {
     // var id = $(this).attr("id");
     if ($(this).is(':checked')) {
       map.setLayoutProperty('totfunde', 'visibility', 'visible');
+      map.setLayoutProperty('totfunde1', 'visibility', 'visible');
     } else {
       map.setLayoutProperty('totfunde', 'visibility', 'none');
+      map.setLayoutProperty('totfunde1', 'visibility', 'none');
     }
   });
 

@@ -13,6 +13,15 @@ import '../css/index.css';
 // loads the Icon plugin
 UIkit.use(Icons);
 
+$(window).width() < 599 ? $('.intro-sidebar').html('Datensätze anzeigen.') : $('.intro-sidebar').html('Hier können Sie sich verschiedene Datensätze anzeigen lassen, um interaktiv die Daten zu den Vogelkollisionen zu erkunden.');
+
+$('#start-btn').on('click', function() {
+  $('#intro').outerHeight(!0);
+  $('#intro').css('top', '100%');
+  $('#sidebar').css('left', '50px');
+  $('#overlay').fadeOut(1E3);
+});
+
 var map = new mapboxgl.Map({
   container: 'map', // container id
   style: {
@@ -45,8 +54,8 @@ var map = new mapboxgl.Map({
 
 map.on('mousemove', function(e) {
   map.queryRenderedFeatures(e.point).length ? map.getCanvas().style.cursor = 'pointer' : map.getCanvas().style.cursor = ''
-  var features = map.queryRenderedFeatures(e.point);
-  document.getElementById('features').innerHTML = JSON.stringify(features, null, 2);
+  // var features = map.queryRenderedFeatures(e.point);
+  // document.getElementById('features').innerHTML = JSON.stringify(features[0].properties, null, 2);
 });
 
 /// / disable map rotation using right click + drag
@@ -65,13 +74,38 @@ map.addControl(new mapboxgl.ScaleControl({
   unit: 'metric'
 }));
 
-$(window).width() < 599 ? $('.intro-sidebar').html('Datensätze anzeigen.') : $('.intro-sidebar').html('Hier können Sie sich verschiedene Datensätze anzeigen lassen, um interaktiv die Daten zu den Vogelkollisionen zu erkunden.');
+var r = $('#details').outerHeight(!0);
+$('#details').css('bottom', 2 * -r);
+$('#details-close').click(function() {
+  $('#details').css('bottom', -r);
+  //  t()
+});
 
-$('#start-btn').on('click', function() {
-  $('#intro').outerHeight(!0);
-  $('#intro').css('top', '100%');
-  $('#sidebar').css('left', '50px');
-  $('#overlay').fadeOut(1E3);
+map.on('click', function(b) {
+  var a = map.queryRenderedFeatures(b.point, {
+    layers: ['totfunde', 'iba']
+  });
+  console.log(a);
+  if (a.length) {
+    b = a[0].layer.id;
+    a = a[0].properties;
+    if (b === 'totfunde') {
+      $('.detail-totfund').show();
+      $('.detail-iba').hide();
+      $('#detail-totfund-vogelart').children('td').eq(1).html(a.Vogelart);
+      $('#detail-totfund-vogelgruppe').children('td').eq(1).html(a.Vogelgruppe);
+      $('#detail-totfund-todesursache').children('td').eq(1).html(a.Todesursache);
+    } else if (b === 'iba') {
+      $('.detail-totfund').hide();
+      $('.detail-iba').show();
+      $('#detail-iba-name').children('td').eq(1).html(a.NAT_NAME);
+    }
+    // $("#detail-adb-img").attr("src", "./img/" + a.Village + ".jpg"));
+    $('#details').css('bottom', '90px');
+  } else {
+    b = $('#details').outerHeight(!0);
+    $('#details').css('bottom', -b);
+  }
 });
 
 var stylesBrutvogelarten = {
@@ -153,11 +187,25 @@ map.on('load', function() {
           'visibility': 'visible'
         },
         'paint': {
+          // make circles larger as the user zooms from z12 to z22
+          'circle-radius': {
+            'base': 1.75,
+            'stops': [[12, 6], [22, 180]]
+          },
           'circle-color': '#000000'
         }
       });
     })
   };
+  $('input[name=totfunde]').change(function() {
+    // Deal with actual checkbox
+    // var id = $(this).attr("id");
+    if ($(this).is(':checked')) {
+      map.setLayoutProperty('totfunde', 'visibility', 'visible');
+    } else {
+      map.setLayoutProperty('totfunde', 'visibility', 'none');
+    }
+  });
 
   map.addLayer({
     'id': 'sensitivitaetskarte',

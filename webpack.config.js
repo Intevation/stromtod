@@ -6,7 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
   entry: {
     bundle: './app/index.js',
-    vendor: ['jquery', 'leaflet', 'leaflet.gridlayer.googlemutant', 'leaflet.vectorgrid', 'uikit']
+    vendor: ['jquery', 'mapbox-gl', 'uikit', 'csv2geojson']
   },
   resolve: {
     modules: [

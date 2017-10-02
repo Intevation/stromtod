@@ -101,19 +101,8 @@ map.on('click', function(b) {
       $('.detail-totfund').show();
       $('.detail-iba').hide();
       $('#detail-totfund-vogelart').children('td').eq(1).html(a.Vogelart);
-      $('#detail-totfund-vogelgruppe').children('td').eq(1).html(a.Vogelgruppe);
       $('#detail-totfund-anzahl-funde').children('td').eq(1).html(a['Anzahl-funde']);
-      $('#detail-totfund-todesursache').children('td').eq(1).html(a.Todesursache);
-      $('#detail-totfund-todesursache-bemerkungen').children('td').eq(1).html(a['Todesursache-bemerkungen']);
-      $('#detail-totfund-foto').children('td').eq(1).html(a.Foto);
-      $('#detail-totfund-umgebung').children('td').eq(1).html(a.Umgebung);
-      $('#detail-totfund-infrastruktur').children('td').eq(1).html(a.Infrastruktur);
-      $('#detail-totfund-abstand').children('td').eq(1).html(a.Abstand);
-      $('#detail-totfund-schutzgebiet').children('td').eq(1).html(a.Schutzgebiet);
-      $('#detail-totfund-wetter').children('td').eq(1).html(a.Wetter);
-      $('#detail-totfund-stromleitung').children('td').eq(1).html(a.Stromleitung);
-      $('#detail-totfund-masttyp').children('td').eq(1).html(a.Masttyp);
-      $('#detail-totfund-erdseile').children('td').eq(1).html(a.Erdseile);
+      $('#detail-totfund-tag').children('td').eq(1).html(a.Tag);
     } else if (b === 'iba') {
       $('.detail-totfund').hide();
       $('.detail-iba').show();

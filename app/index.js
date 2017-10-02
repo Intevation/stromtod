@@ -3,6 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
 import csv2geojson from 'csv2geojson';
+import * as d3 from 'd3-dsv';
 
 // https://css-tricks.com/css-modules-part-2-getting-started/
 // https://medium.com/@rajaraodv/webpack-the-confusing-parts-58712f8fcad9#.txbwrns34
@@ -180,17 +181,34 @@ var stylesBrutvogelarten = {
 map.on('load', function() {
   $.ajax({
     type: 'GET',
-    url: 'data/stromtod.csv',
+    url: 'data/test_EN.csv',
     dataType: 'text',
     success: function(csvData) { makeGeoJSON(csvData); }
   });
 
   function makeGeoJSON(csvData) {
-    csv2geojson.csv2geojson(csvData, {
+    var psv = d3.dsvFormat(';');
+
+    var store = []
+
+    psv.parse(csvData, function(data) {
+      var dummy = {}
+      dummy.Vogelart = data.Vogelart;
+      dummy['Anzahl-funde'] = data['Anzahl-funde'];
+      dummy.Tag = data.Tag;
+      dummy.Todesursache = data.Todesursache;
+      var array = data.Geo.split(',')
+      dummy.lat = array[0];
+      dummy.lon = array[1];
+      store.push(dummy);
+    });
+    // var string = d3.csvFormat(box);
+    csv2geojson.csv2geojson(d3.csvFormat(store), {
       latfield: 'lat',
       lonfield: 'lon',
-      delimiter: ';'
+      delimiter: ','
     }, function(err, data) {
+      console.log(data);
       if (err) {
         console.log(err.stack);
       }
@@ -206,8 +224,8 @@ map.on('load', function() {
         'type': 'circle',
         'paint': {
           'circle-radius': initialRadius,
-          'circle-radius-transition': {duration: 0},
-          'circle-opacity-transition': {duration: 0},
+          'circle-radius-transition': { duration: 0 },
+          'circle-opacity-transition': { duration: 0 },
           'circle-color': '#007cbf'
         }
       });
@@ -222,7 +240,8 @@ map.on('load', function() {
         }
       });
     })
-  };
+  }
+
   function animateMarker(timestamp) {
     setTimeout(function() {
       requestAnimationFrame(animateMarker);

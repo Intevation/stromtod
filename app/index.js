@@ -91,17 +91,18 @@ $('#details-close').click(function() {
 
 map.on('click', function(b) {
   var a = map.queryRenderedFeatures(b.point, {
-    layers: ['totfunde', 'iba']
+    layers: ['leitungskollision', 'stromtod', 'unbekannt', 'iba']
   });
   console.log(a);
   if (a.length) {
     b = a[0].layer.id;
     a = a[0].properties;
-    if (b === 'totfunde') {
+    if (b === 'leitungskollision' || 'stromtod' || 'unbekannt') {
       $('.detail-totfund').show();
       $('.detail-iba').hide();
       $('#detail-totfund-vogelart').children('td').eq(1).html(a.Vogelart);
       $('#detail-totfund-anzahl-funde').children('td').eq(1).html(a['Anzahl-funde']);
+      $('#detail-totfund-todesursache').children('td').eq(1).html(a.Todesursache);
       $('#detail-totfund-tag').children('td').eq(1).html(a.Tag);
     } else if (b === 'iba') {
       $('.detail-totfund').hide();
@@ -208,9 +209,10 @@ map.on('load', function() {
       });
 
       map.addLayer({
-        'id': 'totfunde',
+        'id': 'leitungskollision',
         'source': 'totfunde',
         'type': 'circle',
+        'filter': ['==', 'Todesursache', 'ursache-kollision'],
         'paint': {
           'circle-radius': initialRadius,
           'circle-radius-transition': { duration: 0 },
@@ -220,9 +222,56 @@ map.on('load', function() {
       });
 
       map.addLayer({
-        'id': 'totfunde1',
+        'id': 'leitungskollision1',
         'source': 'totfunde',
         'type': 'circle',
+        'filter': ['==', 'Todesursache', 'ursache-kollision'],
+        'paint': {
+          'circle-radius': initialRadius,
+          'circle-color': '#007cbf'
+        }
+      });
+      map.addLayer({
+        'id': 'stromtod',
+        'source': 'totfunde',
+        'type': 'circle',
+        'filter': ['==', 'Todesursache', 'ursache-stromtod'],
+        'paint': {
+          'circle-radius': initialRadius,
+          'circle-radius-transition': { duration: 0 },
+          'circle-opacity-transition': { duration: 0 },
+          'circle-color': '#007cbf'
+        }
+      });
+
+      map.addLayer({
+        'id': 'stromtod1',
+        'source': 'totfunde',
+        'type': 'circle',
+        'filter': ['==', 'Todesursache', 'ursache-stromtod'],
+        'paint': {
+          'circle-radius': initialRadius,
+          'circle-color': '#007cbf'
+        }
+      });
+      map.addLayer({
+        'id': 'unbekannt',
+        'source': 'totfunde',
+        'type': 'circle',
+        'filter': ['==', 'Todesursache', 'ursache-unbekannt'],
+        'paint': {
+          'circle-radius': initialRadius,
+          'circle-radius-transition': { duration: 0 },
+          'circle-opacity-transition': { duration: 0 },
+          'circle-color': '#007cbf'
+        }
+      });
+
+      map.addLayer({
+        'id': 'unbekannt1',
+        'source': 'totfunde',
+        'type': 'circle',
+        'filter': ['==', 'Todesursache', 'ursache-unbekannt'],
         'paint': {
           'circle-radius': initialRadius,
           'circle-color': '#007cbf'
@@ -230,16 +279,16 @@ map.on('load', function() {
       });
     })
   }
-
-  function animateMarker(timestamp) {
+  function animateMarker(timestamp, layer) {
+    console.log(layer);
     setTimeout(function() {
       requestAnimationFrame(animateMarker);
 
       radius += (maxRadius - radius) / framesPerSecond;
       opacity -= (0.9 / framesPerSecond);
 
-      map.setPaintProperty('totfunde', 'circle-radius', radius);
-      map.setPaintProperty('totfunde', 'circle-opacity', opacity);
+      map.setPaintProperty(layer, 'circle-radius', radius);
+      map.setPaintProperty(layer, 'circle-opacity', opacity);
 
       if (opacity <= 0) {
         radius = initialRadius;
@@ -247,19 +296,19 @@ map.on('load', function() {
       }
     }, 1000 / framesPerSecond);
   }
-
   // Start the animation.
-  animateMarker(0);
+  animateMarker(0, 'leitungskollision');
 
   $('input[name=totfunde]').change(function() {
     // Deal with actual checkbox
-    // var id = $(this).attr("id");
+    var id = $(this).attr('id');
     if ($(this).is(':checked')) {
-      map.setLayoutProperty('totfunde', 'visibility', 'visible');
-      map.setLayoutProperty('totfunde1', 'visibility', 'visible');
+      console.log(id + '1');
+      map.setLayoutProperty(id, 'visibility', 'visible');
+      map.setLayoutProperty(id + '1', 'visibility', 'visible');
     } else {
-      map.setLayoutProperty('totfunde', 'visibility', 'none');
-      map.setLayoutProperty('totfunde1', 'visibility', 'none');
+      map.setLayoutProperty(id, 'visibility', 'none');
+      map.setLayoutProperty(id + '1', 'visibility', 'none');
     }
   });
 

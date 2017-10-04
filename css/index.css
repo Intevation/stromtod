@@ -710,7 +710,7 @@ div#modal-full div.uk-modal-dialog div.uk-padding-large div.org {
     height: 10px;
     border-radius: 20px;
     margin-left: 7px;
-    background:#252525;
+    background:#762a83;
 }
 .circle2::after {
     content: "";
@@ -719,7 +719,7 @@ div#modal-full div.uk-modal-dialog div.uk-padding-large div.org {
     height: 10px;
     border-radius: 20px;
     margin-left: 7px;
-    background:#636363;
+    background:#e9a3c9;
 }
 .circle3::after {
     content: "";
@@ -728,5 +728,5 @@ div#modal-full div.uk-modal-dialog div.uk-padding-large div.org {
     height: 10px;
     border-radius: 20px;
     margin-left: 7px;
-    background: #969696;;
+    background: #3288bd;
 }

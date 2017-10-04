@@ -16,12 +16,7 @@ UIkit.use(Icons);
 
 $(window).width() < 599 ? $('.intro-sidebar').html('Datensätze anzeigen.') : $('.intro-sidebar').html('Hier können Sie sich verschiedene Datensätze anzeigen lassen, um interaktiv die Daten zu den Vogelkollisionen zu erkunden.');
 
-$('#start-btn').on('click', function() {
-  $('#intro').outerHeight(!0);
-  $('#intro').css('top', '100%');
-  $('#sidebar').css('left', '50px');
-  $('#overlay').fadeOut(1E3);
-});
+$('#sidebar').css('left', '50px');
 
 var map = new mapboxgl.Map({
   container: 'map', // container id

@@ -381,6 +381,27 @@ map.on('load', function() {
     'maxzoom': 14
   }, 'sensitivitaetskarte');
 
+  map.addLayer({
+    'id': 'stamen',
+    'type': 'raster',
+    'source': {
+      'type': 'raster',
+      'tiles': [
+        'https://stamen-tiles-a.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
+        'https://stamen-tiles-b.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
+        'https://stamen-tiles-c.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
+        'https://stamen-tiles-d.a.ssl.fastly.net/toner/{z}/{x}/{y}.png'
+      ],
+      'tileSize': 256
+    },
+    'layout': {
+      'visibility': 'none'
+    },
+    'paint': {},
+    'minzoom': 0,
+    'maxzoom': 14
+  }, 'sensitivitaetskarte');
+
   $('input[name=baselayer]').change(function() {
     // Uncheck other checkboxes
     $('input[name=baselayer]').not(this).prop('checked', false);
@@ -390,8 +411,13 @@ map.on('load', function() {
       map.setLayoutProperty(id, 'visibility', 'visible');
       if (id === 'osm') {
         map.setLayoutProperty('satellite', 'visibility', 'none');
+        map.setLayoutProperty('stamen', 'visibility', 'none');
+      } else if (id === 'satellite') {
+        map.setLayoutProperty('osm', 'visibility', 'none');
+        map.setLayoutProperty('stamen', 'visibility', 'none');
       } else {
         map.setLayoutProperty('osm', 'visibility', 'none');
+        map.setLayoutProperty('satellite', 'visibility', 'none');
       }
     } else {
       map.setLayoutProperty(id, 'visibility', 'none');

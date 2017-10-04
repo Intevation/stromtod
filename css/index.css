@@ -1,4 +1,5 @@
 @import "~normalize.css";
+
 /* --- FONTS --- */
 
 
@@ -511,7 +512,6 @@ a:hover {
     padding: 0;
 }
 
-
 #app-container #sidebar .legend .legend-colors {
     width: 100%;
     float: right;
@@ -537,7 +537,6 @@ a:hover {
     margin: 0 5px 5px 5px;
     width: 40% !important;
 }
-
 
 #app-container #sidebar footer {
     width: 100%;
@@ -702,4 +701,32 @@ div#modal-full div.uk-modal-dialog div.uk-padding-large div.org {
     width: 300px;
     overflow: auto;
     background: rgba(255, 255, 255, 0.8);
+}
+
+.circle1::after {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 20px;
+    margin-left: 7px;
+    background:#252525;
+}
+.circle2::after {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 20px;
+    margin-left: 7px;
+    background:#636363;
+}
+.circle3::after {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 20px;
+    margin-left: 7px;
+    background: #969696;;
 }

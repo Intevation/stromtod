@@ -23,13 +23,6 @@ $('#start-btn').on('click', function() {
   $('#overlay').fadeOut(1E3);
 });
 
-var framesPerSecond = 15;
-var initialOpacity = 1
-var opacity = initialOpacity;
-var initialRadius = 8;
-var radius = initialRadius;
-var maxRadius = 18;
-
 var map = new mapboxgl.Map({
   container: 'map', // container id
   style: {
@@ -214,101 +207,43 @@ map.on('load', function() {
         'type': 'circle',
         'filter': ['==', 'Todesursache', 'ursache-kollision'],
         'paint': {
-          'circle-radius': initialRadius,
-          'circle-radius-transition': { duration: 0 },
-          'circle-opacity-transition': { duration: 0 },
-          'circle-color': '#007cbf'
+          'circle-radius': 8,
+          'circle-color': '#252525'
         }
       });
 
-      map.addLayer({
-        'id': 'leitungskollision1',
-        'source': 'totfunde',
-        'type': 'circle',
-        'filter': ['==', 'Todesursache', 'ursache-kollision'],
-        'paint': {
-          'circle-radius': initialRadius,
-          'circle-color': '#007cbf'
-        }
-      });
       map.addLayer({
         'id': 'stromtod',
         'source': 'totfunde',
         'type': 'circle',
         'filter': ['==', 'Todesursache', 'ursache-stromtod'],
         'paint': {
-          'circle-radius': initialRadius,
-          'circle-radius-transition': { duration: 0 },
-          'circle-opacity-transition': { duration: 0 },
-          'circle-color': '#007cbf'
+          'circle-radius': 8,
+          'circle-color': '#636363'
         }
       });
 
-      map.addLayer({
-        'id': 'stromtod1',
-        'source': 'totfunde',
-        'type': 'circle',
-        'filter': ['==', 'Todesursache', 'ursache-stromtod'],
-        'paint': {
-          'circle-radius': initialRadius,
-          'circle-color': '#007cbf'
-        }
-      });
       map.addLayer({
         'id': 'unbekannt',
         'source': 'totfunde',
         'type': 'circle',
         'filter': ['==', 'Todesursache', 'ursache-unbekannt'],
         'paint': {
-          'circle-radius': initialRadius,
-          'circle-radius-transition': { duration: 0 },
-          'circle-opacity-transition': { duration: 0 },
-          'circle-color': '#007cbf'
-        }
-      });
-
-      map.addLayer({
-        'id': 'unbekannt1',
-        'source': 'totfunde',
-        'type': 'circle',
-        'filter': ['==', 'Todesursache', 'ursache-unbekannt'],
-        'paint': {
-          'circle-radius': initialRadius,
-          'circle-color': '#007cbf'
+          'circle-radius': 8,
+          'circle-color': '#969696'
         }
       });
     })
   }
-  function animateMarker(timestamp, layer) {
-    console.log(layer);
-    setTimeout(function() {
-      requestAnimationFrame(animateMarker);
-
-      radius += (maxRadius - radius) / framesPerSecond;
-      opacity -= (0.9 / framesPerSecond);
-
-      map.setPaintProperty(layer, 'circle-radius', radius);
-      map.setPaintProperty(layer, 'circle-opacity', opacity);
-
-      if (opacity <= 0) {
-        radius = initialRadius;
-        opacity = initialOpacity;
-      }
-    }, 1000 / framesPerSecond);
-  }
-  // Start the animation.
-  animateMarker(0, 'leitungskollision');
 
   $('input[name=totfunde]').change(function() {
     // Deal with actual checkbox
+    // $('.totfunde.layer-legend').not(this).removeClass('active');
     var id = $(this).attr('id');
     if ($(this).is(':checked')) {
-      console.log(id + '1');
       map.setLayoutProperty(id, 'visibility', 'visible');
-      map.setLayoutProperty(id + '1', 'visibility', 'visible');
     } else {
       map.setLayoutProperty(id, 'visibility', 'none');
-      map.setLayoutProperty(id + '1', 'visibility', 'none');
     }
   });
 

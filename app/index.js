@@ -81,7 +81,6 @@ map.on('click', function(b) {
   var a = map.queryRenderedFeatures(b.point, {
     layers: ['leitungskollision', 'stromtod', 'unbekannt', 'iba']
   });
-  console.log(a);
   if (a.length) {
     b = a[0].layer.id;
     a = a[0].properties;
@@ -186,7 +185,6 @@ map.on('load', function() {
       lonfield: 'lon',
       delimiter: ','
     }, function(err, data) {
-      console.log(data);
       if (err) {
         console.log(err.stack);
       }
@@ -270,7 +268,6 @@ map.on('load', function() {
 
     // Deal with actual checkbox
     var id = $(this).attr('id');
-    console.log(id);
     if ($(this).is(':checked')) {
       map.setPaintProperty('sensitivitaetskarte', 'fill-color', stylesBrutvogelarten[id]
       );

@@ -159,7 +159,7 @@ var stylesBrutvogelarten = {
 map.on('load', function() {
   $.ajax({
     type: 'GET',
-    url: 'data/test_EN.csv',
+    url: 'data/test_20171005_EN2-utf8.csv',
     dataType: 'text',
     success: function(csvData) { makeGeoJSON(csvData); }
   });

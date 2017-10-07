@@ -251,7 +251,7 @@ map.on('load', function() {
     'id': 'sensitivitaetskarte',
     'source': {
       'type': 'geojson',
-      'data': 'data/Sensitivitaetskarte_wgs84.geojson'
+      'data': 'data/out-p5.geojson'
     },
     'type': 'fill',
     'layout': {

@@ -11,6 +11,9 @@ import '../node_modules/mapbox-gl/dist/mapbox-gl.css';
 import '../node_modules/uikit/dist/css/uikit.css';
 import '../css/index.css';
 
+const ibaTemplate = require('../tmpl/details-iba.html');
+const totfundTemplate = require('../tmpl/details-totfund.html');
+
 // loads the Icon plugin
 UIkit.use(Icons);
 
@@ -70,13 +73,6 @@ map.addControl(new mapboxgl.ScaleControl({
   unit: 'metric'
 }));
 
-var r = $('#details').outerHeight(!0);
-$('#details').css('bottom', 2 * -r);
-$('#details-close').click(function() {
-  $('#details').css('bottom', -r);
-  //  t()
-});
-
 map.on('click', function(b) {
   var a = map.queryRenderedFeatures(b.point, {
     layers: ['leitungskollision', 'stromtod', 'unbekannt', 'iba']
@@ -84,19 +80,25 @@ map.on('click', function(b) {
   if (a.length) {
     b = a[0].layer.id;
     a = a[0].properties;
-    if (b === 'leitungskollision' || 'stromtod' || 'unbekannt') {
-      $('.detail-totfund').show();
-      $('.detail-iba').hide();
-      $('#detail-totfund-vogelart').children('td').eq(1).html(a.Vogelart);
-      $('#detail-totfund-anzahl-funde').children('td').eq(1).html(a['Anzahl-funde']);
-      $('#detail-totfund-todesursache').children('td').eq(1).html(a.Todesursache);
-      $('#detail-totfund-tag').children('td').eq(1).html(a.Tag);
-    } else if (b === 'iba') {
+    if (b === 'iba') {
       $('.detail-totfund').hide();
+      $('#details').html(ibaTemplate(a));
       $('.detail-iba').show();
-      $('#detail-iba-name').children('td').eq(1).html(a.NAT_NAME);
+      var r = $('#details').outerHeight(!0);
+      $('#details').css('bottom', 2 * -r);
+      $('#details-close').click(function() {
+        $('#details').css('bottom', -r);
+      });
+    } else {
+      $('.detail-iba').hide();
+      $('#details').html(totfundTemplate(a));
+      $('.detail-totfund').show();
+      var s = $('#details').outerHeight(!0);
+      $('#details').css('bottom', 2 * -s);
+      $('#details-close').click(function() {
+        $('#details').css('bottom', -s);
+      });
     }
-    // $("#detail-adb-img").attr("src", "./img/" + a.Village + ".jpg"));
     $('#details').css('bottom', '90px');
   } else {
     b = $('#details').outerHeight(!0);

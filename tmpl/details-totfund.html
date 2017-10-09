@@ -1,0 +1,24 @@
+<header>
+    <span>Details Todfunde</span>
+    <a id="details-close" href="#" uk-close></a>
+</header>
+<table>
+    {{#Vogelart}}
+    <tr id="detail-totfund-vogelart" class="detail-totfund">
+        <td>Vogelart:</td>
+        <td>{{Vogelart}}</td>
+    </tr>
+    {{/Vogelart}}
+    {{#Anzahl-funde}}
+    <tr id="detail-totfund-anzahl-funde" class="detail-totfund">
+        <td>Anzahl:</td>
+        <td>{{Anzahl-funde}}</td>
+    </tr>
+    {{/Anzahl-funde}}
+    {{#Tag}}
+    <tr id="detail-totfund-tag" class="detail-totfund">
+        <td>Tag:</td>
+        <td>{{Tag}}</td>
+    </tr>
+    {{/Tag}}
+</table>

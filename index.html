@@ -55,7 +55,10 @@
                             </div>
                         </li>
                         <li>
-                            <h3 class="uk-accordion-title">Hochspannungsstromnetz</h3>
+                            <h3 class="uk-accordion-title">Hochspannungsstromnetz
+                            <span class="tooltip" title="&copy; OpenStreetMap" uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
+
+                            </h3>
                             <div class="uk-accordion-content">
                                 <div class="layer powerlines380kV layer-legend">
                                     <div class="title">
@@ -93,7 +96,10 @@
                             </div>
                         </li>
                         <li>
-                            <h3 class="uk-accordion-title">Anzahl Brutvogelarten</h3>
+                            <h3 class="uk-accordion-title">Anzahl Brutvogelarten
+                            <span class="tooltip" title="&copy; Atlas Deutscher Brutvogelarten (DDA 2015)" uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
+
+                            </h3>
                             <div class="uk-accordion-content">
                                 <div class="layer brutvogelarten layer-legend">
                                     <div class="title">
@@ -143,7 +149,10 @@
                         </li>
 
                         <li>
-                            <h3 class="uk-accordion-title">Important Bird Areas (IBAs)</h3>
+                            <h3 class="uk-accordion-title">Important Bird Areas (IBAs)
+                            <span class="tooltip" title="&copy; Michael-Otto-Institut im NABU (MOIN)" uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
+
+                            </h3>
                             <div class="uk-accordion-content">
                                 <div class="layer iba layer-legend">
                                     <div class="title">
@@ -163,21 +172,33 @@
                             <h3 class="uk-accordion-title">Hintergrundkarten</h3>
                             <div class="uk-accordion-content">
                                 <div class="layer osm">
-                                    <div class="title">OpenStreetMap</div>
+                                    <div class="title">
+                                        <span>OpenStreetMap</span>
+                                        <span class="tooltip" title="&copy; OpenStreetMap"
+                                            uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
+                                    </div>
                                     <div class="switch">
                                         <input type="checkbox" name="baselayer" id="osm" class="ios-toggle" checked/>
                                         <label for="osm" class="checkbox-label" data-off="aus" data-on="an"></label>
                                     </div>
                                 </div>
                                 <div class="layer satellite">
-                                    <div class="title">Satellit</div>
+                                    <div class="title">
+                                        <span>Satellit</span>
+                                        <span class="tooltip" title="Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2016 & 2017)"
+                                            uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
+                                    </div>
                                     <div class="switch">
                                         <input type="checkbox" name="baselayer" id="satellite" class="ios-toggle" />
                                         <label for="satellite" class="checkbox-label" data-off="aus" data-on="an"></label>
                                     </div>
                                 </div>
                                 <div class="layer stamen">
-                                    <div class="title">Schwarz/Weiß</div>
+                                    <div class="title">
+                                        <span>Schwarz/Weiß</span>
+                                        <span class="tooltip" title="Map tiles by Stamen Design, CC BY 3.0 &mdash; Map data &copy; OpenStreetMap"
+                                            uk-tooltip="pos: top" uk-icon="icon: info; ratio: 0.6"></span>
+                                    </div>
                                     <div class="switch">
                                         <input type="checkbox" name="baselayer" id="stamen" class="ios-toggle" />
                                         <label for="stamen" class="checkbox-label" data-off="aus" data-on="an"></label>

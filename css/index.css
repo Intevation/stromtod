@@ -190,7 +190,7 @@ em {
     overflow: hidden;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 681px) {
     html,
     body,
     em {
@@ -252,7 +252,7 @@ a:hover {
     transition: all 1s;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 681px) {
     #app-container #intro {
         width: 90vw;
         left: 5vw;
@@ -309,7 +309,7 @@ a:hover {
     width: 100%;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 681px) {
     #app-container #map {
         height: 40vh;
     }
@@ -334,7 +334,7 @@ a:hover {
     float: right;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 681px) {
     #app-container #map .mapboxgl-ctrl-top-right .mapboxgl-ctrl {
         margin: 20px 20px 0 0;
     }
@@ -348,7 +348,7 @@ a:hover {
     left: 50px;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 681px) {
     #app-container #map div.mapboxgl-ctrl-bottom-left {
         display: none;
     }
@@ -385,7 +385,7 @@ a:hover {
     transition-delay: 0.5s;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 681px) {
     #app-container #sidebar {
         position: initial;
         width: 100vw;
@@ -402,9 +402,9 @@ a:hover {
     align-items: center;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 681px) {
     #app-container #sidebar header {
-        height: 12%;
+        height: 10%;
         padding: 2% 0;
     }
 }
@@ -425,9 +425,9 @@ a:hover {
     overflow-x: hidden;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 681px) {
     #app-container #sidebar div.sidebar-body {
-        height: calc(60vh - 130px);
+        height: calc(80% - 130px);
     }
 }
 
@@ -544,7 +544,7 @@ a:hover {
     border-bottom-right-radius: 4px;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 681px) {
     #app-container #sidebar footer {
         height: 10%;
         z-index: 20;
@@ -567,7 +567,7 @@ a:hover {
     z-index: 20;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 681px) {
     #app-container aside#details {
         width: 100vw;
         right: 0;
@@ -636,7 +636,7 @@ div#modal-full h5 {
     margin-top: 4em;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 681px) {
     div#modal-full h5 {
         margin-top: 2em;
     }
@@ -675,7 +675,7 @@ div#modal-full div.uk-modal-dialog div.uk-padding-large div.wrapper.contact div.
     visibility: hidden;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 681px) {
     div#modal-full div.uk-modal-dialog div.uk-padding-large div.wrapper.contact div.contact-img {
         display: none;
     }

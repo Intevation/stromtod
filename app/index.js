@@ -208,10 +208,10 @@ map.on('load', function() {
         'type': 'circle',
         'filter': ['==', 'Todesursache', 'ursache-kollision'],
         'paint': {
-          'circle-radius': 8,
+          'circle-radius': 4,
           'circle-color': '#762a83',
           'circle-stroke-color': '#000000',
-          'circle-stroke-width': 2
+          'circle-stroke-width': 1
         }
       });
 
@@ -221,10 +221,10 @@ map.on('load', function() {
         'type': 'circle',
         'filter': ['==', 'Todesursache', 'ursache-stromtod'],
         'paint': {
-          'circle-radius': 8,
+          'circle-radius': 4,
           'circle-color': '#e9a3c9',
           'circle-stroke-color': '#000000',
-          'circle-stroke-width': 2
+          'circle-stroke-width': 1
 
         }
       });
@@ -235,10 +235,10 @@ map.on('load', function() {
         'type': 'circle',
         'filter': ['==', 'Todesursache', 'ursache-unbekannt'],
         'paint': {
-          'circle-radius': 8,
+          'circle-radius': 4,
           'circle-color': '#3288bd',
           'circle-stroke-color': '#000000',
-          'circle-stroke-width': 2
+          'circle-stroke-width': 1
         }
       });
     })

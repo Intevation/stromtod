@@ -73,6 +73,12 @@ map.addControl(new mapboxgl.ScaleControl({
   unit: 'metric'
 }));
 
+var s = $('#details').outerHeight(!0);
+$('#details').css('bottom', 2 * -s);
+$('#details-close').click(function() {
+  $('#details').css('bottom', -s);
+});
+
 map.on('click', function(b) {
   var a = map.queryRenderedFeatures(b.point, {
     layers: ['leitungskollision', 'stromtod', 'unbekannt', 'iba']

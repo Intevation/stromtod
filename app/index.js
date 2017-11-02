@@ -48,7 +48,9 @@ var map = new mapboxgl.Map({
     }]
   },
   center: [6.402, 51.638],
-  zoom: 5.33
+  zoom: 5.33,
+  attributionControl: false
+
 });
 
 map.on('mousemove', function(e) {
@@ -57,15 +59,13 @@ map.on('mousemove', function(e) {
   // document.getElementById('features').innerHTML = JSON.stringify(features[0].properties, null, 2);
 });
 
-/// / disable map rotation using right click + drag
-// map.dragRotate.disable();
-//
-/// / disable map rotation using touch rotation gesture
-// map.touchZoomRotate.disableRotation();
-//
+// disable map rotation using right click + drag
+map.dragRotate.disable();
+
+// disable map rotation using touch rotation gesture
+map.touchZoomRotate.disableRotation();
+
 // map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-/// / disable map rotation using right click + drag
-// map.dragRotate.disable();
 
 map.addControl(new mapboxgl.NavigationControl());
 map.addControl(new mapboxgl.ScaleControl({

@@ -166,8 +166,8 @@ var stylesBrutvogelarten = {
 map.on('load', function() {
   $.ajax({
     type: 'GET',
-    url: 'data/test_20171005_EN2-utf8.csv',
-    dataType: 'text',
+    // www.dropbox.com doesn't support cors use dl.dropboxusercontent.com instead.
+    url: 'https://dl.dropboxusercontent.com/s/r8qq3zqmhb1y3kv/Stromtod.csv?raw=1&dl=1',
     success: function(csvData) { makeGeoJSON(csvData); }
   });
 

@@ -181,7 +181,7 @@ map.on('load', function() {
   $.ajax({
     type: 'GET',
     // www.dropbox.com doesn't support cors use dl.dropboxusercontent.com instead.
-    url: 'https://dl.dropboxusercontent.com/s/r8qq3zqmhb1y3kv/Stromtod.csv?raw=1&dl=1',
+    url: 'data/171117-stromtod-anonym.csv',
     success: function(csvData) { makeGeoJSON(csvData); }
   });
 
@@ -194,11 +194,10 @@ map.on('load', function() {
       var dummy = {}
       dummy.Vogelart = data.Vogelart;
       dummy['Anzahl-funde'] = data['Anzahl-funde'];
-      dummy.Tag = data.Tag;
+      dummy.Tag = data.Tag + '.' + data.Monat + '.' + data.Jahr;
       dummy.Todesursache = data.Todesursache;
-      var array = data.Geo.split(',')
-      dummy.lat = array[0];
-      dummy.lon = array[1];
+      dummy.lat = data.Geo1;
+      dummy.lon = data.Geo2;
       store.push(dummy);
     });
     // var string = d3.csvFormat(box);

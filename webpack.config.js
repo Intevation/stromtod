@@ -16,15 +16,6 @@ module.exports = function(env, argv) {
         path.resolve('./'),
         path.resolve('./node_modules')
 
-      ],
-      packageMains: [
-        'module', // adds check for 'module'
-        'webpack',
-        'browser',
-        'web',
-        'browserify',
-        ['jam', 'main'],
-        'main'
       ]
     },
     // https://webpack.js.org/configuration/devtool/

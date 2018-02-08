@@ -181,7 +181,8 @@ map.on('load', function() {
   $.ajax({
     type: 'GET',
     // www.dropbox.com doesn't support cors use dl.dropboxusercontent.com instead.
-    url: 'data/171117-stromtod-anonym.csv',
+    url: 'https://dl.dropboxusercontent.com/s/i4c3i6t04lr66e0/Stromtod.csv?raw=1&dl=1',
+    // url: 'data/171117-stromtod-anonym.csv',
     success: function(csvData) { makeGeoJSON(csvData); }
   });
 

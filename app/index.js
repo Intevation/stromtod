@@ -187,7 +187,7 @@ map.on('load', function() {
   });
 
   function makeGeoJSON(csvData) {
-    var psv = d3.dsvFormat(';');
+    var psv = d3.dsvFormat(',');
 
     var store = []
 
@@ -197,8 +197,8 @@ map.on('load', function() {
       dummy['Anzahl-funde'] = data['Anzahl-funde'];
       dummy.Tag = data.Tag + '.' + data.Monat + '.' + data.Jahr;
       dummy.Todesursache = data.Todesursache;
-      dummy.lat = data.Geo1;
-      dummy.lon = data.Geo2;
+      dummy.lat = data.lat;
+      dummy.lon = data.lon;
       store.push(dummy);
     });
     // var string = d3.csvFormat(box);

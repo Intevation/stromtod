@@ -26,7 +26,8 @@ module.exports = function(env, argv) {
     devtool: process.env.NODE_ENV === 'production' ? 'none' : 'eval-source-map',
     devServer: {
       compress: true,
-      port: 9000
+      port: 9000,
+      host: '0.0.0.0'
     },
     performance: {
       hints: 'warning'

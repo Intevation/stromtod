@@ -189,20 +189,20 @@ map.on('load', function() {
   function makeGeoJSON(csvData) {
     var psv = d3.dsvFormat(',');
 
-    var store = []
+    var totfunde = []
 
     psv.parse(csvData, function(data) {
-      var dummy = {}
-      dummy.Vogelart = data.Vogelart;
-      dummy['Anzahl-funde'] = data['Anzahl-funde'];
-      dummy.Tag = data.Tag + '.' + data.Monat + '.' + data.Jahr;
-      dummy.Todesursache = data.Todesursache;
-      dummy.lat = data.lat;
-      dummy.lon = data.lon;
-      store.push(dummy);
+      var totfund = {}
+      totfund.Vogelart = data.Vogelart;
+      totfund['Anzahl-funde'] = data['Anzahl-funde'];
+      totfund.Tag = data.Tag + '.' + data.Monat + '.' + data.Jahr;
+      totfund.Todesursache = data.Todesursache;
+      totfund.lat = data.lat;
+      totfund.lon = data.lon;
+      totfunde.push(totfund);
     });
     // var string = d3.csvFormat(box);
-    csv2geojson.csv2geojson(d3.csvFormat(store), {
+    csv2geojson.csv2geojson(d3.csvFormat(totfunde), {
       latfield: 'lat',
       lonfield: 'lon',
       delimiter: ','

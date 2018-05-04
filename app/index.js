@@ -2,8 +2,8 @@ import $ from 'jquery';
 import mapboxgl from 'mapbox-gl';
 import UIkit from 'uikit';
 import csv2geojson from 'csv2geojson';
+
 // https://www.giacomodebidda.com/how-to-import-d3-plugins-with-webpack/
-import {request} from 'd3-request';
 import {dsvFormat, csvFormat} from 'd3-dsv';
 
 // https://css-tricks.com/css-modules-part-2-getting-started/
@@ -15,7 +15,6 @@ import '../css/index.css';
 // create a Object with only the subset of functions/submodules/plugins that we need
 const d3 = Object.assign({},
   {
-    request,
     dsvFormat,
     csvFormat
   }, {});

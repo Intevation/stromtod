@@ -9,7 +9,7 @@ module.exports = function(env, argv) {
   return {
     entry: {
       bundle: './app/index.js',
-      vendor: ['jquery', 'mapbox-gl', 'uikit', 'csv2geojson', 'd3-dsv', 'd3-request']
+      vendor: ['jquery', 'mapbox-gl', 'uikit', 'csv2geojson', 'd3-dsv']
     },
     resolve: {
       modules: [

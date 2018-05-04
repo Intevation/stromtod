@@ -3,21 +3,11 @@ import mapboxgl from 'mapbox-gl';
 import UIkit from 'uikit';
 import csv2geojson from 'csv2geojson';
 
-// https://www.giacomodebidda.com/how-to-import-d3-plugins-with-webpack/
-import {dsvFormat, csvFormat} from 'd3-dsv';
-
 // https://css-tricks.com/css-modules-part-2-getting-started/
 // https://medium.com/@rajaraodv/webpack-the-confusing-parts-58712f8fcad9#.txbwrns34
 import '../node_modules/mapbox-gl/dist/mapbox-gl.css';
 import '../node_modules/uikit/dist/css/uikit.css';
 import '../css/index.css';
-
-// create a Object with only the subset of functions/submodules/plugins that we need
-const d3 = Object.assign({},
-  {
-    dsvFormat,
-    csvFormat
-  }, {});
 
 const ibaTemplate = require('../tmpl/details-iba.html');
 const totfundTemplate = require('../tmpl/details-totfund.html');
@@ -175,10 +165,6 @@ var stylesBrutvogelarten = {
 };
 
 map.on('load', function() {
-  // d3-request broken in in conjunction with webpack (because d3-request is intend to work with node only)
-  // https://github.com/d3/d3-request/issues/24
-  // d3.request('https://www.dropbox.com/s/r8qq3zqmhb1y3kv/Stromtod.csv?raw=1&dl=1').header('X-Requested-With', 'XMLHttpRequest').mimeType('text/plain').response(function(xhr) { makeGeoJSON(xhr.responseText) });
-
   $.ajax({
     type: 'GET',
     // www.dropbox.com doesn't support cors use dl.dropboxusercontent.com instead.
@@ -188,22 +174,7 @@ map.on('load', function() {
   });
 
   function makeGeoJSON(csvData) {
-    var psv = d3.dsvFormat(',');
-
-    var totfunde = []
-
-    psv.parse(csvData, function(data) {
-      var totfund = {}
-      totfund.Vogelart = data.Vogelart;
-      totfund['Anzahl-funde'] = data['Anzahl-funde'];
-      totfund.Tag = data.Tag + '.' + data.Monat + '.' + data.Jahr;
-      totfund.Todesursache = data.Todesursache;
-      totfund.lat = data.lat;
-      totfund.lon = data.lon;
-      totfunde.push(totfund);
-    });
-    // var string = d3.csvFormat(box);
-    csv2geojson.csv2geojson(d3.csvFormat(totfunde), {
+    csv2geojson.csv2geojson(csvData, {
       latfield: 'lat',
       lonfield: 'lon',
       delimiter: ','

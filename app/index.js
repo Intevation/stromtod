@@ -457,11 +457,11 @@ map.on('load', function() {
   });
 
   $('.brutvogelarten.layer-legend').each(function() {
-    var b = $(this).find('input[name=brutvogelarten]').attr('id');
-    var a = [];
-    switch (b) {
+    var brutvogelarten = $(this).find('input[name=brutvogelarten]').attr('id');
+    var colors = [];
+    switch (brutvogelarten) {
       case 'BrutvogelartenA':
-        a = [
+        colors = [
           [0, '#ffffff'],
           [0, '#eaee26'],
           [1, '#f3b710'],
@@ -470,7 +470,7 @@ map.on('load', function() {
         ];
         break;
       case 'BrutvogelartenB':
-        a = [
+        colors = [
           [0, '#ffffff'],
           [0, '#eaee26'],
           [1, '#f3b710'],
@@ -479,7 +479,7 @@ map.on('load', function() {
         ];
         break;
       case 'BrutvogelartenC':
-        a = [
+        colors = [
           [0, '#ffffff'],
           [0, '#eaee26'],
           [15, '#f3b710'],
@@ -488,7 +488,7 @@ map.on('load', function() {
         ];
         break;
       case 'BrutvogelartenABC':
-        a = [
+        colors = [
           [0, '#ffffff'],
           [0, '#eaee26'],
           [17, '#f3b710'],
@@ -497,17 +497,17 @@ map.on('load', function() {
         ];
         break;
       default:
-        console.log("Sorry, we haven't found a legend style for " + b + '.');
+        console.log("Sorry, we haven't found a legend style for " + brutvogelarten + '.');
     }
-    var d = 100 / a.length;
-    var e = '<div class="legend-colors">';
-    for (var c = 0; c < a.length; c++) e += '<span style="width:' + d + '%; background-color:' + a[c][1] + ';" ></span>';
-    for (c = 0; c < a.length; c++) {
-      var f = '';
-      f = c === 0 ? a[c + 1][0] : c === a.length - 1 ? '> ' + a[c][0] : '> ' + a[c][0] + ' - ' + a[c + 1][0];
-      e += '<span style="width:' + d + '%;">' + f + ' Arten</span>'
+    var width = 100 / colors.length;
+    var legendColors = '<div class="legend-colors">';
+    for (var color = 0; color < colors.length; color++) legendColors += '<span style="width:' + width + '%; background-color:' + colors[color][1] + ';" ></span>';
+    for (color = 0; color < colors.length; color++) {
+      var count = '';
+      count = color === 0 ? colors[color + 1][0] : color === colors.length - 1 ? '> ' + colors[color][0] : '> ' + colors[color][0] + ' - ' + colors[color + 1][0];
+      legendColors += '<span style="width:' + width + '%;">' + count + ' Arten</span>'
     }
-    e += '</div>';
-    $(this).next().append(e)
+    legendColors += '</div>';
+    $(this).next().append(legendColors)
   });
 });

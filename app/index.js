@@ -18,7 +18,9 @@ var info = '<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3
 // loads the Icon plugin
 UIkit.icon.add({ info: info });
 
-$(window).width() < 599 ? $('.intro-sidebar').html('Datensätze anzeigen.') : $('.intro-sidebar').html('Hier können Sie sich verschiedene Datensätze anzeigen lassen, um interaktiv die Daten zu den Vogelkollisionen zu erkunden.');
+$(window).width() < 599
+  ? $('.intro-sidebar').html('Datensätze anzeigen.')
+  : $('.intro-sidebar').html('Hier können Sie sich verschiedene Datensätze anzeigen lassen, um interaktiv die Daten zu den Vogelkollisionen zu erkunden.');
 
 $('#sidebar').css('left', '50px');
 
@@ -54,8 +56,8 @@ var map = new mapboxgl.Map({
 
 });
 
-map.on('mousemove', function(e) {
-  map.queryRenderedFeatures(e.point).length ? map.getCanvas().style.cursor = 'pointer' : map.getCanvas().style.cursor = ''
+map.on('mousemove', function(ev) {
+  map.queryRenderedFeatures(ev.point).length ? map.getCanvas().style.cursor = 'pointer' : map.getCanvas().style.cursor = ''
   // var features = map.queryRenderedFeatures(e.point);
   // document.getElementById('features').innerHTML = JSON.stringify(features[0].properties, null, 2);
 });
@@ -74,42 +76,42 @@ map.addControl(new mapboxgl.ScaleControl({
   unit: 'metric'
 }));
 
-var s = $('#details').outerHeight(!0);
-$('#details').css('bottom', 2 * -s);
+var outerHeight = $('#details').outerHeight(!0);
+$('#details').css('bottom', 2 * -outerHeight);
 $('#details-close').click(function() {
-  $('#details').css('bottom', -s);
+  $('#details').css('bottom', -outerHeight);
 });
 
-map.on('click', function(b) {
-  var a = map.queryRenderedFeatures(b.point, {
+map.on('click', function(ev) {
+  var features = map.queryRenderedFeatures(ev.point, {
     layers: ['leitungskollision', 'stromtod', 'unbekannt', 'iba']
   });
-  if (a.length) {
-    b = a[0].layer.id;
-    a = a[0].properties;
-    if (b === 'iba') {
+  if (features.length) {
+    let id = features[0].layer.id;
+    let props = features[0].properties;
+    if (id === 'iba') {
       $('.detail-totfund').hide();
-      $('#details').html(ibaTemplate(a));
+      $('#details').html(ibaTemplate(props));
       $('.detail-iba').show();
-      var r = $('#details').outerHeight(!0);
-      $('#details').css('bottom', 2 * -r);
+      var outerHeightIBA = $('#details').outerHeight(!0);
+      $('#details').css('bottom', 2 * outerHeightIBA);
       $('#details-close').click(function() {
-        $('#details').css('bottom', -r);
+        $('#details').css('bottom', -outerHeightIBA);
       });
     } else {
       $('.detail-iba').hide();
-      $('#details').html(totfundTemplate(a));
+      $('#details').html(totfundTemplate(props));
       $('.detail-totfund').show();
-      var s = $('#details').outerHeight(!0);
-      $('#details').css('bottom', 2 * -s);
+      var outerHeightTotfund = $('#details').outerHeight(!0);
+      $('#details').css('bottom', 2 * -outerHeightTotfund);
       $('#details-close').click(function() {
-        $('#details').css('bottom', -s);
+        $('#details').css('bottom', -outerHeightTotfund);
       });
     }
     $('#details').css('bottom', '90px');
   } else {
-    b = $('#details').outerHeight(!0);
-    $('#details').css('bottom', -b);
+    let oh = $('#details').outerHeight(!0);
+    $('#details').css('bottom', -oh);
   }
 });
 

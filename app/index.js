@@ -84,7 +84,7 @@ $('#details-close').click(function() {
 
 map.on('click', function(ev) {
   var features = map.queryRenderedFeatures(ev.point, {
-    layers: ['leitungskollision', 'stromtod', 'unbekannt', 'iba']
+    layers: ['leitungskollision', 'stromtod', 'bahn', 'unbekannt', 'iba']
   });
   if (features.length) {
     let id = features[0].layer.id;
@@ -171,7 +171,7 @@ map.on('load', function() {
     type: 'GET',
     // www.dropbox.com doesn't support cors use dl.dropboxusercontent.com instead.
     url: 'https://dl.dropboxusercontent.com/s/i4c3i6t04lr66e0/Stromtod.csv?raw=1&dl=1',
-    // url: 'data/171117-stromtod-anonym.csv',
+    // url: 'data/Stromtod.csv',
     success: function(csvData) { makeGeoJSON(csvData); }
   });
 
@@ -225,6 +225,19 @@ map.on('load', function() {
         'paint': {
           'circle-radius': 6,
           'circle-color': '#3288bd',
+          'circle-stroke-color': '#ffffff',
+          'circle-stroke-width': 1
+        }
+      });
+
+      map.addLayer({
+        'id': 'bahn',
+        'source': 'totfunde',
+        'type': 'circle',
+        'filter': ['==', 'Todesursache', 'ursache-bahn'],
+        'paint': {
+          'circle-radius': 6,
+          'circle-color': '#3131d3',
           'circle-stroke-color': '#ffffff',
           'circle-stroke-width': 1
         }

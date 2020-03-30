@@ -722,6 +722,15 @@ div#modal-full div.uk-modal-dialog div.uk-padding-large div.org {
     margin-left: 7px;
     background: #3288bd;
 }
+.circle4::after {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 20px;
+    margin-left: 7px;
+    background:#3131d3;
+}
 .mapboxgl-ctrl-group .mapboxgl-ctrl-compass {
     display: none;
     }

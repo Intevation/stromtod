@@ -237,7 +237,7 @@ map.on('load', function() {
         'filter': ['==', 'Todesursache', 'ursache-bahn'],
         'paint': {
           'circle-radius': 6,
-          'circle-color': '#3131d3',
+          'circle-color': '#FF7F00',
           'circle-stroke-color': '#ffffff',
           'circle-stroke-width': 1
         }

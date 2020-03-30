@@ -290,7 +290,7 @@ map.on('load', function() {
     'id': 'iba',
     'source': {
       'type': 'geojson',
-      'data': 'data/iba.geojson'
+      'data': 'data/spa_de_2018-pick.geojson'
     },
     'type': 'fill',
     'layout': {

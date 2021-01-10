@@ -55,4 +55,10 @@ ncftp -u $FTP_USER -p $FTP_PASSWORD $FTP_SERVER
 ncftp -u $FTP_USER -p $FTP_PASSWORD ftp://$FTP_SERVER/stromtod
 ```
 
+## Data
+
+Sample [data/Stromtod.csv](data/Stromtod.csv) is here only for local testing and development.
+
+Production data (`Stromtod.csv`) is served from `https://dl.dropboxusercontent.com`.
+
 Have fun.

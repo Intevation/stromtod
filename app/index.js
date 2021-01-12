@@ -76,10 +76,8 @@ map.addControl(new mapboxgl.ScaleControl({
   unit: 'metric'
 }));
 
-var outerHeight = $('#details').outerHeight(!0);
-$('#details').css('bottom', 2 * -outerHeight);
-$('#details-close').click(function() {
-  $('#details').css('bottom', -outerHeight);
+$('#details-close').on('click', function() {
+  $('#details').css('top', '100vH');
 });
 
 map.on('click', function(ev) {
@@ -87,28 +85,32 @@ map.on('click', function(ev) {
     layers: ['leitungskollision', 'stromtod', 'bahn', 'unbekannt', 'iba']
   });
   if (features.length) {
-    let id = features[0].layer.id;
-    let props = features[0].properties;
+    const id = features[0].layer.id;
+    const props = features[0].properties;
     if (id === 'iba') {
       $('.detail-totfund').hide();
       $('#details').html(ibaTemplate(props));
       $('.detail-iba').show();
-      var outerHeightIBA = $('#details').outerHeight(!0);
-      $('#details').css('bottom', 2 * outerHeightIBA);
-      $('#details-close').click(function() {
-        $('#details').css('bottom', -outerHeightIBA);
-      });
     } else {
       $('.detail-iba').hide();
       $('#details').html(totfundTemplate(props));
       $('.detail-totfund').show();
-      var outerHeightTotfund = $('#details').outerHeight(!0);
-      $('#details').css('bottom', 2 * -outerHeightTotfund);
-      $('#details-close').click(function() {
-        $('#details').css('bottom', -outerHeightTotfund);
-      });
     }
-    $('#details').css('bottom', '90px');
+    $('#details-close').on('click', function() {
+      $('#details').css('top', '100vH');
+    });
+    const detH = $('#details').height();
+    const detW = $('#details').outerWidth(true);
+    const screenH = $(document).height();
+    const screenW = $(document).width();
+    const x = ev.point.x < screenW - detW ? ev.point.x : ev.point.x - detW;
+    $('#details').css('left', x);
+    const y = ev.point.y < screenH - detH ? ev.point.y : ev.point.y - detH;
+    $('#details').css('top', y);
+
+    $('#details-close').on('click', function() {
+      $('#details').css('top', '100vH');
+    });
   } else {
     let oh = $('#details').outerHeight(!0);
     $('#details').css('bottom', -oh);

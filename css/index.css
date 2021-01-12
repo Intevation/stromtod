@@ -560,9 +560,8 @@ a:hover {
     box-shadow: 0 20px 40px -20px #A3A3A3;
     background-color: #fff;
     position: absolute;
-    right: 60px;
     transition: .5s all;
-    height: auto;
+    height: fit-content;
     width: 370px;
     z-index: 20;
 }

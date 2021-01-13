@@ -596,6 +596,10 @@ a:hover {
     top: 20px;
 }
 
+#app-container aside#details header a svg {
+    pointer-events: none;
+}
+
 #app-container aside#details table {
     margin: 5% 5% 5% 10%;
 }

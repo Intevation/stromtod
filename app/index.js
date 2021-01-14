@@ -112,8 +112,7 @@ map.on('click', function(ev) {
       $('#details').css('top', '100vH');
     });
   } else {
-    let oh = $('#details').outerHeight(!0);
-    $('#details').css('bottom', -oh);
+    $('#details').css('top', '100vH');
   }
 });
 

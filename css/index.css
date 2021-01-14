@@ -452,6 +452,9 @@ a:hover {
     font-weight: 700;
     padding: 0 30px;
 }
+#app-container #sidebar div.sidebar-body h3.uk-accordion-title::before {
+    display: none;
+}
 
 #app-container #sidebar div.sidebar-body h3.uk-accordion-title::after {
     content: "";
